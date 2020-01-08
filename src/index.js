@@ -20,11 +20,12 @@ import {
   APP_KEY,
   CHUNK_SIZE,
   CLA,
-  INS,
+  ERROR_CODE,
   errorCodeToString,
   getVersion,
-  processErrorResponse,
+  INS,
   P1_VALUES,
+  processErrorResponse,
 } from "./common";
 
 function processGetAddrResponse(response) {
@@ -56,20 +57,6 @@ export default class FilecoinApp {
     );
   }
 
-  async serializePath(path) {
-    this.versionResponse = await getVersion(this.transport);
-    switch (this.versionResponse.major) {
-      case 0:
-      case 1:
-        return serializePathv1(path);
-      default:
-        return {
-          return_code: 0x6400,
-          error_message: "App Version is not supported",
-        };
-    }
-  }
-
   static prepareChunks(serializedPathBuffer, message) {
     const chunks = [];
 
@@ -90,15 +77,37 @@ export default class FilecoinApp {
     return chunks;
   }
 
+  async serializePath(path) {
+    this.versionResponse = await getVersion(this.transport);
+
+    if (this.versionResponse.return_code !== ERROR_CODE.NoError) {
+      throw this.versionResponse;
+    }
+
+    switch (this.versionResponse.major) {
+      case 0:
+      case 1:
+        return serializePathv1(path);
+      default:
+        return {
+          return_code: 0x6400,
+          error_message: "App Version is not supported",
+        };
+    }
+  }
+
   async signGetChunks(path, message) {
     const serializedPath = await this.serializePath(path);
-
     return FilecoinApp.prepareChunks(serializedPath, message);
   }
 
   async getVersion() {
-    this.versionResponse = await getVersion(this.transport);
-    return this.versionResponse;
+    return getVersion(this.transport)
+      .then(response => {
+        this.versionResponse = response;
+        return response;
+      })
+      .catch(err => processErrorResponse(err));
   }
 
   async appInfo() {
@@ -152,63 +161,71 @@ export default class FilecoinApp {
   }
 
   async deviceInfo() {
-    return this.transport.send(0xe0, 0x01, 0, 0, Buffer.from([]), [0x9000, 0x6e00]).then(response => {
-      const errorCodeData = response.slice(-2);
-      const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+    return this.transport
+      .send(0xe0, 0x01, 0, 0, Buffer.from([]), [ERROR_CODE.NoError, 0x6e00])
+      .then(response => {
+        const errorCodeData = response.slice(-2);
+        const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
-      if (returnCode === 0x6e00) {
+        if (returnCode === 0x6e00) {
+          return {
+            return_code: returnCode,
+            error_message: "This command is only available in the Dashboard",
+          };
+        }
+
+        const targetId = response.slice(0, 4).toString("hex");
+
+        let pos = 4;
+        const secureElementVersionLen = response[pos];
+        pos += 1;
+        const seVersion = response.slice(pos, pos + secureElementVersionLen).toString();
+        pos += secureElementVersionLen;
+
+        const flagsLen = response[pos];
+        pos += 1;
+        const flag = response.slice(pos, pos + flagsLen).toString("hex");
+        pos += flagsLen;
+
+        const mcuVersionLen = response[pos];
+        pos += 1;
+        // Patch issue in mcu version
+        let tmp = response.slice(pos, pos + mcuVersionLen);
+        if (tmp[mcuVersionLen - 1] === 0) {
+          tmp = response.slice(pos, pos + mcuVersionLen - 1);
+        }
+        const mcuVersion = tmp.toString();
+
         return {
           return_code: returnCode,
-          error_message: "This command is only available in the Dashboard",
+          error_message: errorCodeToString(returnCode),
+          // //
+          targetId,
+          seVersion,
+          flag,
+          mcuVersion,
         };
-      }
-
-      const targetId = response.slice(0, 4).toString("hex");
-
-      let pos = 4;
-      const secureElementVersionLen = response[pos];
-      pos += 1;
-      const seVersion = response.slice(pos, pos + secureElementVersionLen).toString();
-      pos += secureElementVersionLen;
-
-      const flagsLen = response[pos];
-      pos += 1;
-      const flag = response.slice(pos, pos + flagsLen).toString("hex");
-      pos += flagsLen;
-
-      const mcuVersionLen = response[pos];
-      pos += 1;
-      // Patch issue in mcu version
-      let tmp = response.slice(pos, pos + mcuVersionLen);
-      if (tmp[mcuVersionLen - 1] === 0) {
-        tmp = response.slice(pos, pos + mcuVersionLen - 1);
-      }
-      const mcuVersion = tmp.toString();
-
-      return {
-        return_code: returnCode,
-        error_message: errorCodeToString(returnCode),
-        // //
-        targetId,
-        seVersion,
-        flag,
-        mcuVersion,
-      };
-    }, processErrorResponse);
+      }, processErrorResponse);
   }
 
   async getAddressAndPubKey(path) {
-    const data = await this.serializePath(path);
-    return this.transport
-      .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.ONLY_RETRIEVE, 0, data, [0x9000])
-      .then(processGetAddrResponse, processErrorResponse);
+    return this.serializePath(path)
+      .then(data => {
+        return this.transport
+          .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.ONLY_RETRIEVE, 0, data, [0x9000])
+          .then(processGetAddrResponse, processErrorResponse);
+      })
+      .catch(err => processErrorResponse(err));
   }
 
   async showAddressAndPubKey(path) {
-    const data = await this.serializePath(path);
-    return this.transport
-      .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, data, [0x9000])
-      .then(processGetAddrResponse, processErrorResponse);
+    return this.serializePath(path)
+      .then(data => {
+        return this.transport
+          .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, data, [0x9000])
+          .then(processGetAddrResponse, processErrorResponse);
+      })
+      .catch(err => processErrorResponse(err));
   }
 
   async signSendChunk(chunkIdx, chunkNum, chunk) {
@@ -225,29 +242,29 @@ export default class FilecoinApp {
   }
 
   async sign(path, message) {
-    const chunks = await this.signGetChunks(path, message);
+    return this.signGetChunks(path, message).then(chunks => {
+      return this.signSendChunk(1, chunks.length, chunks[0], [ERROR_CODE.NoError]).then(async response => {
+        let result = {
+          return_code: response.return_code,
+          error_message: response.error_message,
+          signature: null,
+        };
 
-    return this.signSendChunk(1, chunks.length, chunks[0], [0x9000]).then(async response => {
-      let result = {
-        return_code: response.return_code,
-        error_message: response.error_message,
-        signature: null,
-      };
-
-      for (let i = 1; i < chunks.length; i += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        result = await this.signSendChunk(1 + i, chunks.length, chunks[i]);
-        if (result.return_code !== 0x9000) {
-          break;
+        for (let i = 1; i < chunks.length; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          result = await this.signSendChunk(1 + i, chunks.length, chunks[i]);
+          if (result.return_code !== ERROR_CODE.NoError) {
+            break;
+          }
         }
-      }
 
-      return {
-        return_code: result.return_code,
-        error_message: result.error_message,
-        // ///
-        signature: result.signature,
-      };
+        return {
+          return_code: result.return_code,
+          error_message: result.error_message,
+          // ///
+          signature: result.signature,
+        };
+      }, processErrorResponse);
     }, processErrorResponse);
   }
 }

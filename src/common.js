@@ -43,7 +43,7 @@ const ERROR_DESCRIPTION = {
   0x6a80: "Bad key handle",
   0x6b00: "Invalid P1/P2",
   0x6d00: "Instruction not supported",
-  0x6e00: "Cosmos app does not seem to be open",
+  0x6e00: "App does not seem to be open",
   0x6f00: "Unknown error",
   0x6f01: "Sign/verify error",
 };
@@ -53,10 +53,36 @@ export function errorCodeToString(statusCode) {
   return `Unknown Status Code: ${statusCode}`;
 }
 
+function isDict(v) {
+  return typeof v === "object" && v !== null && !(v instanceof Array) && !(v instanceof Date);
+}
+
 export function processErrorResponse(response) {
+  if (response) {
+    if (isDict(response)) {
+      if (Object.prototype.hasOwnProperty.call(response, "statusCode")) {
+        return {
+          return_code: response.statusCode,
+          error_message: errorCodeToString(response.statusCode),
+        };
+      }
+
+      if (
+        Object.prototype.hasOwnProperty.call(response, "return_code") &&
+        Object.prototype.hasOwnProperty.call(response, "error_message")
+      ) {
+        return response;
+      }
+    }
+    return {
+      return_code: 0xffff,
+      error_message: response.toString(),
+    };
+  }
+
   return {
-    return_code: response.statusCode,
-    error_message: errorCodeToString(response.statusCode),
+    return_code: 0xffff,
+    error_message: response.toString(),
   };
 }
 
