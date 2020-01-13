@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       deviceLog: [],
-      transportChoice: "WebUSB",
+      transportChoice: "U2F",
     };
   },
   computed: {
@@ -92,112 +92,122 @@ export default {
       return transport;
     },
     async getVersion() {
-      this.deviceLog = [];
-
-      // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport();
-      const app = new FilecoinApp(transport);
 
-      // now it is possible to access all commands in the app
-      const response = await app.getVersion();
-      if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+      try {
+        this.deviceLog = [];
+        const app = new FilecoinApp(transport);
+        // now it is possible to access all commands in the app
+        const response = await app.getVersion();
+        if (response.return_code !== 0x9000) {
+          this.log(`Error [${response.return_code}] ${response.error_message}`);
+          return;
+        }
+
+        this.log("Response received!");
+        this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
+        this.log(`Device Locked: ${response.device_locked}`);
+        this.log(`Test mode: ${response.test_mode}`);
+        this.log("Full response:");
+        this.log(response);
+      } finally {
+        transport.close();
       }
-
-      this.log("Response received!");
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
-      this.log("Full response:");
-      this.log(response);
     },
     async appInfo() {
-      this.deviceLog = [];
-
-      // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport();
-      const app = new FilecoinApp(transport);
+      try {
+        this.deviceLog = [];
+        const app = new FilecoinApp(transport);
 
-      // now it is possible to access all commands in the app
-      const response = await app.appInfo();
-      if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        // now it is possible to access all commands in the app
+        const response = await app.appInfo();
+        if (response.return_code !== 0x9000) {
+          this.log(`Error [${response.return_code}] ${response.error_message}`);
+          return;
+        }
+
+        this.log("Response received!");
+        this.log(response);
+      } finally {
+        transport.close();
       }
-
-      this.log("Response received!");
-      this.log(response);
     },
     async getAddress() {
-      this.deviceLog = [];
-
-      // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport();
-      const app = new FilecoinApp(transport);
+      try {
+        this.deviceLog = [];
+        const app = new FilecoinApp(transport);
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+        let response = await app.getVersion();
+        this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
+        this.log(`Device Locked: ${response.device_locked}`);
+        this.log(`Test mode: ${response.test_mode}`);
 
-      // now it is possible to access all commands in the app
-      response = await app.getAddressAndPubKey(path);
-      if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        // now it is possible to access all commands in the app
+        response = await app.getAddressAndPubKey(path);
+        if (response.return_code !== 0x9000) {
+          this.log(`Error [${response.return_code}] ${response.error_message}`);
+          return;
+        }
+
+        this.log("Response received!");
+        this.log("Full response:");
+        this.log(response);
+      } finally {
+        transport.close();
       }
-
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
     },
     async showAddress() {
-      this.deviceLog = [];
-
-      // Given a transport (U2F/HIF/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport();
-      const app = new FilecoinApp(transport);
+      this.deviceLog = [];
+      try {
+        const app = new FilecoinApp(transport);
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+        let response = await app.getVersion();
+        this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
+        this.log(`Device Locked: ${response.device_locked}`);
+        this.log(`Test mode: ${response.test_mode}`);
 
-      // now it is possible to access all commands in the app
-      this.log("Please click in the device");
-      response = await app.showAddressAndPubKey(path);
-      if (response.return_code !== 0x9000) {
-        this.log(`Error [${response.return_code}] ${response.error_message}`);
-        return;
+        // now it is possible to access all commands in the app
+        this.log("Please click in the device");
+        response = await app.showAddressAndPubKey(path);
+        if (response.return_code !== 0x9000) {
+          this.log(`Error [${response.return_code}] ${response.error_message}`);
+          return;
+        }
+
+        this.log("Response received!");
+        this.log("Full response:");
+        this.log(response);
+      } finally {
+        transport.close();
       }
-
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
     },
     async signExampleTx() {
-      this.deviceLog = [];
-
-      // Given a transport (U2F/HID/WebUSB) it is possible instantiate the app
       const transport = await this.getTransport();
-      const app = new FilecoinApp(transport);
 
-      let response = await app.getVersion();
-      this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
-      this.log(`Device Locked: ${response.device_locked}`);
-      this.log(`Test mode: ${response.test_mode}`);
+      try {
+        this.deviceLog = [];
+        const app = new FilecoinApp(transport);
 
-      const message = Buffer.from(
-        "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omd4ZmVyX3RvWCBkNhaFWEyIEubmS3EVtRLTanD3U+vDV5fke4Obyq" +
-          "83CWt4ZmVyX3Rva2Vuc0Blbm9uY2UAZm1ldGhvZHBzdGFraW5nLlRyYW5zZmVy",
-        "base64",
-      );
-      response = await app.sign(path, message);
+        let response = await app.getVersion();
+        this.log(`App Version ${response.major}.${response.minor}.${response.patch}`);
+        this.log(`Device Locked: ${response.device_locked}`);
+        this.log(`Test mode: ${response.test_mode}`);
 
-      this.log("Response received!");
-      this.log("Full response:");
-      this.log(response);
+        const message = Buffer.from(
+          "875501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a01430186a04209c44261a800",
+          "hex",
+        );
+        response = await app.sign(path, message);
+
+        this.log("Response received!");
+        this.log("Full response:");
+        this.log(response);
+      } finally {
+        transport.close();
+      }
     },
   },
 };
