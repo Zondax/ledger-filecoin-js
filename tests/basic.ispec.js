@@ -46,7 +46,7 @@ test("getAddressAndPubKey", async () => {
       "0325d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d0",
     );
 
-    expect(resp.address).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfiyyiikq");
+    expect(resp.address).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfaglieba");
   } finally {
     transport.close();
   }
@@ -75,7 +75,7 @@ test("showAddressAndPubKey", async () => {
       "03b481eeff158ba0044fa075b2a53cb34de11193699e0fd0ee8abb10fa2acd9bc3",
     );
 
-    expect(resp.address).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmwdcuici");
+    expect(resp.address).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmxpoklzy");
   } finally {
     transport.close();
   }
@@ -136,7 +136,7 @@ test("sign_and_verify", async () => {
     // Derivation path. First 3 items are automatically hardened!
     const path = [44, 461, 0, 0, 0];
     const message = Buffer.from(
-      "875501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a01430186a04209c44261a800",
+      "885501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
       "hex",
     );
 
@@ -171,7 +171,7 @@ test("sign_invalid", async () => {
     const app = new FilecoinApp(transport);
 
     const path = [44, 461, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
-    let invalidMessage = Buffer.from("A2666669656C64316676616C756531666669656C64326676616C756532", "hex");
+    let invalidMessage = Buffer.from("88315501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040", "hex");
     invalidMessage += "1";
 
     const responseSign = await app.sign(path, invalidMessage);
