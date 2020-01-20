@@ -38,7 +38,8 @@ test("getAddressAndPubKey", async () => {
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
     expect(resp.error_message).toEqual("No errors");
 
-    expect(resp).toHaveProperty("address");
+    expect(resp).toHaveProperty("addrByte");
+    expect(resp).toHaveProperty("addrString");
     expect(resp).toHaveProperty("compressed_pk");
 
     expect(resp.compressed_pk.length).toEqual(33);
@@ -46,7 +47,7 @@ test("getAddressAndPubKey", async () => {
       "0325d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d0",
     );
 
-    expect(resp.address).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfaglieba");
+    expect(resp.addrString).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfaglieba");
   } finally {
     transport.close();
   }
@@ -67,7 +68,8 @@ test("showAddressAndPubKey", async () => {
     expect(resp.return_code).toEqual(0x9000);
     expect(resp.error_message).toEqual("No errors");
 
-    expect(resp).toHaveProperty("address");
+    expect(resp).toHaveProperty("addrByte");
+    expect(resp).toHaveProperty("addrString");
     expect(resp).toHaveProperty("compressed_pk");
 
     expect(resp.compressed_pk.length).toEqual(33);
@@ -75,7 +77,7 @@ test("showAddressAndPubKey", async () => {
       "03b481eeff158ba0044fa075b2a53cb34de11193699e0fd0ee8abb10fa2acd9bc3",
     );
 
-    expect(resp.address).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmxpoklzy");
+    expect(resp.addrString).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmxpoklzy");
   } finally {
     transport.close();
   }
