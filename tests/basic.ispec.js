@@ -47,6 +47,10 @@ test("getAddressAndPubKey", async () => {
       "0325d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d0",
     );
 
+    expect(resp.addrByte.toString("hex")).toEqual(
+      "0171d1b27cf522114294029c5a42351f716cbb6c65",
+    );
+
     expect(resp.addrString).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfaglieba");
   } finally {
     transport.close();
@@ -75,6 +79,10 @@ test("showAddressAndPubKey", async () => {
     expect(resp.compressed_pk.length).toEqual(33);
     expect(resp.compressed_pk.toString("hex")).toEqual(
       "03b481eeff158ba0044fa075b2a53cb34de11193699e0fd0ee8abb10fa2acd9bc3",
+    );
+
+    expect(resp.addrByte.toString("hex")).toEqual(
+      "014e14ae1814ac4c91e97a77dbaeabe27a4dcba54c",
     );
 
     expect(resp.addrString).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmxpoklzy");
