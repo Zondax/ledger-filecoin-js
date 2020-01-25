@@ -33,10 +33,23 @@ function processGetAddrResponse(response) {
   const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
   const pk = Buffer.from(response.slice(0, 33));
-  const address = Buffer.from(response.slice(33, -2)).toString();
+  response = response.slice(33);
+
+  const addrByteLength = response[0];
+  response = response.slice(1)
+
+  const addrByte = Buffer.from(response.slice(0, addrByteLength));
+  response = response.slice(addrByteLength);
+
+  const addrStringLength = response[0];
+  response = response.slice(1)
+
+  const addrString = Buffer.from(response.slice(0, addrStringLength)).toString();
+
 
   return {
-    address,
+    addrByte,
+    addrString,
     compressed_pk: pk,
     return_code: returnCode,
     error_message: errorCodeToString(returnCode),
