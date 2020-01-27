@@ -29,23 +29,24 @@ import {
 } from "./common";
 
 function processGetAddrResponse(response) {
-  const errorCodeData = response.slice(-2);
+  let partialResponse = response;
+
+  const errorCodeData = partialResponse.slice(-2);
   const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
-  const pk = Buffer.from(response.slice(0, 33));
-  response = response.slice(33);
+  const pk = Buffer.from(partialResponse.slice(0, 33));
+  partialResponse = partialResponse.slice(33);
 
-  const addrByteLength = response[0];
-  response = response.slice(1)
+  const addrByteLength = partialResponse[0];
+  partialResponse = partialResponse.slice(1);
 
-  const addrByte = Buffer.from(response.slice(0, addrByteLength));
-  response = response.slice(addrByteLength);
+  const addrByte = Buffer.from(partialResponse.slice(0, addrByteLength));
+  partialResponse = partialResponse.slice(addrByteLength);
 
-  const addrStringLength = response[0];
-  response = response.slice(1)
+  const addrStringLength = partialResponse[0];
+  partialResponse = partialResponse.slice(1);
 
-  const addrString = Buffer.from(response.slice(0, addrStringLength)).toString();
-
+  const addrString = Buffer.from(partialResponse.slice(0, addrStringLength)).toString();
 
   return {
     addrByte,

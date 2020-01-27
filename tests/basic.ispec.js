@@ -10,6 +10,7 @@ test("get version", async () => {
   try {
     const app = new FilecoinApp(transport);
     const resp = await app.getVersion();
+    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -33,6 +34,7 @@ test("getAddressAndPubKey", async () => {
     const path = [44, 461, 5, 0, 3];
     const resp = await app.getAddressAndPubKey(path);
 
+    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -47,9 +49,7 @@ test("getAddressAndPubKey", async () => {
       "0325d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d0",
     );
 
-    expect(resp.addrByte.toString("hex")).toEqual(
-      "0171d1b27cf522114294029c5a42351f716cbb6c65",
-    );
+    expect(resp.addrByte.toString("hex")).toEqual("0171d1b27cf522114294029c5a42351f716cbb6c65");
 
     expect(resp.addrString).toEqual("f1ohi3e7hveiiuffactrneeni7ofwlw3dfaglieba");
   } finally {
@@ -67,6 +67,7 @@ test("showAddressAndPubKey", async () => {
     const path = [44, 461, 0, 0, 1];
     const resp = await app.showAddressAndPubKey(path);
 
+    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(0x9000);
@@ -81,9 +82,7 @@ test("showAddressAndPubKey", async () => {
       "03b481eeff158ba0044fa075b2a53cb34de11193699e0fd0ee8abb10fa2acd9bc3",
     );
 
-    expect(resp.addrByte.toString("hex")).toEqual(
-      "014e14ae1814ac4c91e97a77dbaeabe27a4dcba54c",
-    );
+    expect(resp.addrByte.toString("hex")).toEqual("014e14ae1814ac4c91e97a77dbaeabe27a4dcba54c");
 
     expect(resp.addrString).toEqual("f1jykk4gauvrgjd2l2o7n25k7cpjg4xjkmxpoklzy");
   } finally {
@@ -98,6 +97,7 @@ test("appInfo", async () => {
 
     const resp = await app.appInfo();
 
+    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -123,6 +123,7 @@ test("deviceInfo", async () => {
 
     const resp = await app.deviceInfo();
 
+    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -153,7 +154,9 @@ test("sign_and_verify", async () => {
     const responsePk = await app.getAddressAndPubKey(path);
     const responseSign = await app.sign(path, message);
 
+    // eslint-disable-next-line no-console
     console.log(responsePk);
+    // eslint-disable-next-line no-console
     console.log(responseSign);
 
     expect(responsePk.return_code).toEqual(ERROR_CODE.NoError);
@@ -181,11 +184,15 @@ test("sign_invalid", async () => {
     const app = new FilecoinApp(transport);
 
     const path = [44, 461, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
-    let invalidMessage = Buffer.from("88315501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040", "hex");
+    let invalidMessage = Buffer.from(
+      "88315501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
+      "hex",
+    );
     invalidMessage += "1";
 
     const responseSign = await app.sign(path, invalidMessage);
 
+    // eslint-disable-next-line no-console
     console.log(responseSign);
     expect(responseSign.return_code).toEqual(0x6984);
     expect(responseSign.error_message).toEqual("Data is invalid : Unexpected data type");
