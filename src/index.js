@@ -226,7 +226,7 @@ export default class FilecoinApp {
     return this.serializePath(path)
       .then(data => {
         return this.transport
-          .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.ONLY_RETRIEVE, 0, data, [0x9000])
+          .send(CLA, INS.GET_ADDR_SECP256K1, P1_VALUES.ONLY_RETRIEVE, 0, data, [0x9000])
           .then(processGetAddrResponse, processErrorResponse);
       })
       .catch(err => processErrorResponse(err));
@@ -236,7 +236,7 @@ export default class FilecoinApp {
     return this.serializePath(path)
       .then(data => {
         return this.transport
-          .send(CLA, INS.GET_ADDR_ED25519, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, data, [0x9000])
+          .send(CLA, INS.GET_ADDR_SECP256K1, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, data, [0x9000])
           .then(processGetAddrResponse, processErrorResponse);
       })
       .catch(err => processErrorResponse(err));
@@ -261,7 +261,8 @@ export default class FilecoinApp {
         let result = {
           return_code: response.return_code,
           error_message: response.error_message,
-          signature: null,
+          signature_compact: null,
+          signature_der: null,
         };
 
         for (let i = 1; i < chunks.length; i += 1) {
@@ -276,7 +277,8 @@ export default class FilecoinApp {
           return_code: result.return_code,
           error_message: result.error_message,
           // ///
-          signature: result.signature,
+          signature_compact: result.signature_compact,
+          signature_der: result.signature_der,
         };
       }, processErrorResponse);
     }, processErrorResponse);

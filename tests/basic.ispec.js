@@ -2,7 +2,7 @@ import FilecoinApp from "index.js";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { expect, test } from "jest";
 import secp256k1 from "secp256k1/elliptic";
-import crypto from "crypto";
+import blake2 from "blake2";
 import { ERROR_CODE } from "../src/common";
 
 test("get version", async () => {
@@ -154,23 +154,36 @@ test("sign_and_verify", async () => {
     const responsePk = await app.getAddressAndPubKey(path);
     const responseSign = await app.sign(path, message);
 
-    // eslint-disable-next-line no-console
-    console.log(responsePk);
-    // eslint-disable-next-line no-console
-    console.log(responseSign);
-
     expect(responsePk.return_code).toEqual(ERROR_CODE.NoError);
     expect(responsePk.error_message).toEqual("No errors");
     expect(responseSign.return_code).toEqual(ERROR_CODE.NoError);
     expect(responseSign.error_message).toEqual("No errors");
 
-    // Check signature is valid
-    const hash = crypto.createHash("sha256");
-    const msgHash = hash.update(message).digest();
+    // Calculate message digest
+    // digest = blake2-256( prefix + blake2b-256(tx) )
+    let hasher;
 
-    const signatureDER = responseSign.signature;
+    hasher = blake2.createHash("blake2b", { digestLength: 32 });
+    hasher.update(message);
+    const tmp = hasher.digest();
+
+    hasher = blake2.createHash("blake2b", { digestLength: 32 });
+    const prefix = Buffer.from([0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20]);
+    hasher.update(prefix);
+    hasher.update(tmp);
+    const msgDigest = hasher.digest();
+
+    // Check signature is valid
+    const signatureDER = responseSign.signature_der;
     const signature = secp256k1.signatureImport(signatureDER);
-    const signatureOk = secp256k1.verify(msgHash, signature, responsePk.compressed_pk);
+
+    // Check compact signatures
+    const sigBuf = Buffer.from(signature);
+    const sigCompBuf = Buffer.from(responseSign.signature_compact.slice(0, 64));
+
+    expect(sigBuf).toEqual(sigCompBuf);
+
+    const signatureOk = secp256k1.ecdsaVerify(signature, msgDigest, responsePk.compressed_pk);
     expect(signatureOk).toEqual(true);
   } finally {
     transport.close();
