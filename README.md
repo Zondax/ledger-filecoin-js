@@ -1,7 +1,7 @@
 # ledger-filecoin-js
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![npm version](https://badge.fury.io/js/ledger-filecoin-js.svg)](https://badge.fury.io/js/ledger-filecoin-js)
+[![npm version](https://badge.fury.io/js/%40zondax%2Fledger-filecoin.svg)](https://badge.fury.io/js/%40zondax%2Fledger-filecoin)
 [![CircleCI](https://circleci.com/gh/Zondax/ledger-filecoin-js.svg?style=shield)](https://circleci.com/gh/Zondax/ledger-filecoin-js)
 [![CodeFactor](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js/badge)](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js)
 
