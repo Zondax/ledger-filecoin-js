@@ -12,3 +12,7 @@ We recommend using the npmjs package in order to receive updates/fixes.
 This repo also includes a simple Vue example for WebUSB.
 
 ![Example](docs/example.png)
+
+## Notes
+
+Use `yarn install` to avoid issues.
