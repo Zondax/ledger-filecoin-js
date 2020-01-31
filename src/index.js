@@ -25,6 +25,7 @@ import {
   getVersion,
   INS,
   P1_VALUES,
+  PKLEN,
   processErrorResponse,
 } from "./common";
 
@@ -34,8 +35,8 @@ function processGetAddrResponse(response) {
   const errorCodeData = partialResponse.slice(-2);
   const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
-  const pk = Buffer.from(partialResponse.slice(0, 33));
-  partialResponse = partialResponse.slice(33);
+  const pk = Buffer.from(partialResponse.slice(0, PKLEN));
+  partialResponse = partialResponse.slice(PKLEN);
 
   const addrByteLength = partialResponse[0];
   partialResponse = partialResponse.slice(1);

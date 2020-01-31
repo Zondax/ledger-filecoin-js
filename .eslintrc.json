@@ -26,6 +26,10 @@
   "rules": {
     "import/prefer-default-export": "off",
     "vue/html-self-closing": "off",
-    "vue/max-attributes-per-line": "off"
+    "vue/max-attributes-per-line": "off",
+    "import/no-unresolved": [
+      2,
+      { "caseSensitive": false }
+    ]
   }
 }
