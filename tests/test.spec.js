@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import * as bip39 from "bip39";
 import * as bip32 from "bip32";
 import secp256k1 from "secp256k1/elliptic";
-import { test } from "./jest";
+import { expect, test } from "./jest";
 
 test("hex to base64", async () => {
   const hex =
@@ -52,8 +53,7 @@ test("recover pubkey2", async () => {
   );
   const expectedUncompressedKey =
     "0466f2bdb19e90fd7c29e4bf63612eb98515e5163c97888042364ba777d818e88b765c649056ba4a62292ae4e2ccdabd71b845d8fa0991c140f664d2978ac0972a";
-  const expectedCompressedKey =
-    "0266f2bdb19e90fd7c29e4bf63612eb98515e5163c97888042364ba777d818e88b";
+  const expectedCompressedKey = "0266f2bdb19e90fd7c29e4bf63612eb98515e5163c97888042364ba777d818e88b";
 
   const message = Buffer.from("f98956833a086822f08c357aeb8500ed9f654b4d31e42cc78e1e5160d80459fe", "hex");
 

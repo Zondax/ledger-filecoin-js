@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import FilecoinApp from "index.js";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { expect, test } from "jest";
@@ -58,6 +59,7 @@ test("getAddressAndPubKey", async () => {
 });
 
 test("showAddressAndPubKey", async () => {
+  // noinspection ES6ModulesDependencies
   jest.setTimeout(60000);
   const transport = await TransportNodeHid.create();
   try {
@@ -91,6 +93,7 @@ test("showAddressAndPubKey", async () => {
 });
 
 test("getAddressAndPubKeyTestnet", async () => {
+  // noinspection ES6ModulesDependencies
   jest.setTimeout(60000);
   const transport = await TransportNodeHid.create();
   try {
@@ -171,6 +174,7 @@ test("deviceInfo", async () => {
 });
 
 test("sign_and_verify", async () => {
+  // noinspection ES6ModulesDependencies
   jest.setTimeout(60000);
   const transport = await TransportNodeHid.create();
   try {
@@ -212,6 +216,7 @@ test("sign_and_verify", async () => {
 });
 
 test("sign_and_verify_testnet", async () => {
+  // noinspection ES6ModulesDependencies
   jest.setTimeout(60000);
   const transport = await TransportNodeHid.create();
   try {
@@ -268,6 +273,7 @@ test("sign_and_verify_testnet", async () => {
 });
 
 test("sign_invalid", async () => {
+  // noinspection ES6ModulesDependencies
   jest.setTimeout(60000);
   const transport = await TransportNodeHid.create();
   try {
