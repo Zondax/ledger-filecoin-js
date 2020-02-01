@@ -21,7 +21,7 @@
   "homepage": "https://github.com/zondax/ledger-filecoin-js",
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@ledgerhq/hw-transport": "^5.7.0",
+    "@ledgerhq/hw-transport": "^5.7.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
@@ -33,7 +33,7 @@
     "@ledgerhq/hw-transport-u2f": "^5.7.0",
     "@ledgerhq/hw-transport-webusb": "^5.7.0",
     "@ledgerhq/logs": "^5.6.0",
-    "@openworklabs/filecoin-message": "^0.0.7",
+    "@openworklabs/filecoin-message": "^0.0.8",
     "@vue/cli-plugin-babel": "^4.1.1",
     "@vue/cli-plugin-eslint": "^4.1.1",
     "@vue/cli-service": "^4.1.1",
