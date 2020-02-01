@@ -4,7 +4,8 @@ import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { expect, test } from "jest";
 import secp256k1 from "secp256k1/elliptic";
 import Message from "@openworklabs/filecoin-message";
-import { ERROR_CODE, getDigest, PKLEN } from "../src/common";
+import { ERROR_CODE, PKLEN } from "../src/common";
+import { getDigest } from "./utils";
 
 test("get version", async () => {
   const transport = await TransportNodeHid.create();

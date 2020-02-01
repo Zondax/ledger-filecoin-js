@@ -22,7 +22,6 @@
   "dependencies": {
     "@babel/runtime": "^7.8.3",
     "@ledgerhq/hw-transport": "^5.7.0",
-    "blake2": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
@@ -40,6 +39,7 @@
     "@vue/cli-service": "^4.1.1",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^25.1.0",
+    "blake2": "^4.0.0",
     "bip32": "^2.0.5",
     "bip39": "^3.0.2",
     "core-js": "^3.6.4",
