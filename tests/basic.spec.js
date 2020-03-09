@@ -3,7 +3,7 @@ import blake2 from "blake2";
 import secp256k1 from "secp256k1/elliptic";
 import { expect, test } from "./jest";
 import { getCID, getDigest } from "./utils";
-import { serializePathv1, HARDENED } from "../src/helperV1.js"
+import { serializePathv1} from "../src/helperV1"
 
 test("serializePathv1", async () => {
   const path = "m/44'/461'/0/0/5";
@@ -14,7 +14,7 @@ test("serializePathv1", async () => {
   buf.writeUInt32LE(0, 12);
   buf.writeUInt32LE(5, 16);
 
-  let bufPath = serializePathv1(path);
+  const bufPath = serializePathv1(path);
 
   expect(bufPath).toEqual(buf);
 });
@@ -24,7 +24,7 @@ test("serializePathv1 should be a string", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Path should be a string/)
+  }).toThrowError(/Path should be a string/);
 
 });
 
@@ -33,7 +33,7 @@ test("serializePathv1 doesn't start with 'm'", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Path should start with "m"/)
+  }).toThrowError(/Path should start with "m"/);
 
 });
 
@@ -42,7 +42,7 @@ test("serializePathv1 length need to be 5", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Invalid path/)
+  }).toThrowError(/Invalid path/);
 
 });
 
