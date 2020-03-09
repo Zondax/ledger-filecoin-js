@@ -51,6 +51,14 @@ test("serializePathv1 invalid number", async () => {
   }).toThrowError(/Invalid path : l is not a number/);
 });
 
+test("serializePathv1 bigger than 0x80000000", async () => {
+  const path = "m/44'/461'/0/0/2147483649";
+
+  expect(() => {
+    serializePathv1(path);
+  }).toThrowError(/bigger than 0x80000000/);
+});
+
 test("cidBytes", async () => {
   const message = Buffer.from(
     "884300e9075501d18cb80b758a3f4e136112ef4c7590c2c0a4691200420001404200010040",
