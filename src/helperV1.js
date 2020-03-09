@@ -11,7 +11,7 @@ export function serializePathv1(path) {
     throw new Error("Path should start with \"m\" (e.g \"m/44'/461'/5'/0/3\")");
   }
 
-  let pathArray = path.split("/");
+  const pathArray = path.split("/");
 
   if (pathArray.length !== 6) {
     throw new Error("Invalid path. (e.g \"m/44'/461'/5'/0/3\")");
@@ -19,18 +19,18 @@ export function serializePathv1(path) {
 
   const buf = Buffer.alloc(20);
 
-  for (i = 1; i < pathArray.length; i++) {
+  for (let i = 1; i < pathArray.length; i+=1) {
     let value = 0;
     let child = pathArray[i];
     if (child.endsWith("'")) {
       value += HARDENED;
-      child = kek.slice(0,-1);
+      child = child.slice(0,-1);
     }
 
     value += Number(child);
 
     if (Number.isNaN(value)) {
-      throw new Error("Invalid path : " + child + " is not a number. (e.g \"m/44'/461'/5'/0/3\")");
+      throw new Error(`Invalid path : ${child} is not a number. (e.g "m/44'/461'/5'/0/3")`);
     }
 
     buf.writeUInt32LE(value, 4*(i-1));
