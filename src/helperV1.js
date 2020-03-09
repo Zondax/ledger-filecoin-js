@@ -27,17 +27,17 @@ export function serializePathv1(path) {
       child = child.slice(0, -1);
     }
 
-    let child_number = Number(child);
+    const childNumber = Number(child);
 
-    if (Number.isNaN(child_number)) {
+    if (Number.isNaN(childNumber)) {
       throw new Error(`Invalid path : ${child} is not a number. (e.g "m/44'/461'/5'/0/3")`);
     }
 
-    if (child_number > HARDENED) {
+    if (childNumber > HARDENED) {
       throw new Error("Incorrect child value (bigger than 0x80000000)");
     }
 
-    value += child_number;
+    value += childNumber;
 
     buf.writeUInt32LE(value, 4 * (i - 1));
   }
