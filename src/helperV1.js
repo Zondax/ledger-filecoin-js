@@ -3,12 +3,12 @@ import { CLA, errorCodeToString, INS, PAYLOAD_TYPE, processErrorResponse } from 
 const HARDENED = 0x80000000;
 
 export function serializePathv1(path) {
-  if (typeof(path) !== "string") {
-    throw new Error("Path should be a string (e.g \"m/44'/461'/5'/0/3\")");
+  if (typeof path !== "string") {
+    throw new Error('Path should be a string (e.g "m/44\'461\'/5\'/0/3")');
   }
 
   if (!path.startsWith("m")) {
-    throw new Error("Path should start with \"m\" (e.g \"m/44'/461'/5'/0/3\")");
+    throw new Error('Path should start with "m" (e.g "m/44\'/461\'/5\'/0/3\")');
   }
 
   const pathArray = path.split("/");
@@ -19,12 +19,12 @@ export function serializePathv1(path) {
 
   const buf = Buffer.alloc(20);
 
-  for (let i = 1; i < pathArray.length; i+=1) {
+  for (let i = 1; i < pathArray.length; i += 1) {
     let value = 0;
     let child = pathArray[i];
     if (child.endsWith("'")) {
       value += HARDENED;
-      child = child.slice(0,-1);
+      child = child.slice(0, -1);
     }
 
     value += Number(child);
@@ -33,7 +33,7 @@ export function serializePathv1(path) {
       throw new Error(`Invalid path : ${child} is not a number. (e.g "m/44'/461'/5'/0/3")`);
     }
 
-    buf.writeUInt32LE(value, 4*(i-1));
+    buf.writeUInt32LE(value, 4 * (i - 1));
   }
 
   return buf;

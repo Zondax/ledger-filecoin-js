@@ -278,7 +278,7 @@ test("sign_invalid", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    const path = "m/44'/461'/0'/0/0"
+    const path = "m/44'/461'/0'/0/0";
     let invalidMessage = Buffer.from(
       "88315501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
       "hex",
