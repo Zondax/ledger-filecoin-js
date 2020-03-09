@@ -1,16 +1,40 @@
 import { CLA, errorCodeToString, INS, PAYLOAD_TYPE, processErrorResponse } from "./common";
 
+const HARDENED = 0x80000000;
+
 export function serializePathv1(path) {
-  if (!path || path.length !== 5) {
-    throw new Error("Invalid path.");
+  if (typeof(path) !== "string") {
+    throw new Error("Path should be a string (e.g \"m/44'/461'/5'/0/3\")");
+  }
+
+  if (!path.startsWith("m")) {
+    throw new Error("Path should start with \"m\" (e.g \"m/44'/461'/5'/0/3\")");
+  }
+
+  let pathArray = path.split("/");
+
+  if (pathArray.length !== 6) {
+    throw new Error("Invalid path. (e.g \"m/44'/461'/5'/0/3\")");
   }
 
   const buf = Buffer.alloc(20);
-  buf.writeUInt32LE(0x80000000 + path[0], 0);
-  buf.writeUInt32LE(0x80000000 + path[1], 4);
-  buf.writeUInt32LE(path[2], 8);
-  buf.writeUInt32LE(path[3], 12);
-  buf.writeUInt32LE(path[4], 16);
+
+  for (i = 1; i < pathArray.length; i++) {
+    let value = 0;
+    let child = pathArray[i];
+    if (child.endsWith("'")) {
+      value += HARDENED;
+      child = kek.slice(0,-1);
+    }
+
+    value += Number(child);
+
+    if (Number.isNaN(value)) {
+      throw new Error("Invalid path : " + child + " is not a number. (e.g \"m/44'/461'/5'/0/3\")");
+    }
+
+    buf.writeUInt32LE(value, 4*(i-1));
+  }
 
   return buf;
 }
