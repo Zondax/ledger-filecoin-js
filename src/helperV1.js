@@ -4,17 +4,17 @@ const HARDENED = 0x80000000;
 
 export function serializePathv1(path) {
   if (typeof path !== "string") {
-    throw new Error('Path should be a string (e.g "m/44\'461\'/5\'/0/3")');
+    throw new Error('Path should be a string (e.g "m/44\'/461\'/5\'/0/3")');
   }
 
   if (!path.startsWith("m")) {
-    throw new Error('Path should start with "m" (e.g "m/44\'/461\'/5\'/0/3\")');
+    throw new Error('Path should start with "m" (e.g "m/44\'/461\'/5\'/0/3")');
   }
 
   const pathArray = path.split("/");
 
   if (pathArray.length !== 6) {
-    throw new Error("Invalid path. (e.g \"m/44'/461'/5'/0/3\")");
+    throw new Error('Invalid path. (e.g "m/44\'/461\'/5\'/0/3")');
   }
 
   const buf = Buffer.alloc(20);
