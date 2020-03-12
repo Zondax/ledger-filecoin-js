@@ -32,8 +32,7 @@ test("getAddressAndPubKey", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 461, 5, 0, 3];
+    const path = "m/44'/461'/5'/0/3";
     const resp = await app.getAddressAndPubKey(path);
 
     // eslint-disable-next-line no-console
@@ -66,8 +65,7 @@ test("showAddressAndPubKey", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 461, 0, 0, 1];
+    const path = "m/44'/461'/0'/0/1";
     const resp = await app.showAddressAndPubKey(path);
 
     // eslint-disable-next-line no-console
@@ -182,7 +180,7 @@ test("sign_and_verify", async () => {
     const app = new FilecoinApp(transport);
 
     // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 461, 0, 0, 0];
+    const path = "m/44'/461'/0'/0/0";
     const message = Buffer.from(
       "885501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
       "hex",
@@ -280,7 +278,7 @@ test("sign_invalid", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    const path = [44, 461, 0, 0, 0]; // Derivation path. First 3 items are automatically hardened!
+    const path = "m/44'/461'/0'/0/0";
     let invalidMessage = Buffer.from(
       "88315501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
       "hex",
