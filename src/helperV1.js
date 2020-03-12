@@ -33,7 +33,7 @@ export function serializePathv1(path) {
       throw new Error(`Invalid path : ${child} is not a number. (e.g "m/44'/461'/5'/0/3")`);
     }
 
-    if (childNumber > HARDENED) {
+    if (childNumber >= HARDENED) {
       throw new Error("Incorrect child value (bigger than 0x80000000)");
     }
 
