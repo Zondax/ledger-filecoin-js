@@ -35,7 +35,7 @@ test("serializePathv1 doesn't start with 'm'", async () => {
   }).toThrowError(/Path should start with "m"/);
 });
 
-test("serializePathv1 length need to be 5", async () => {
+test("serializePathv1 length needs to be 5", async () => {
   const path = "m/44'/461'/0/0";
 
   expect(() => {
@@ -52,11 +52,19 @@ test("serializePathv1 invalid number", async () => {
 });
 
 test("serializePathv1 bigger than 0x80000000", async () => {
+  const path = "m/44'/461'/0/0/2147483648";
+
+  expect(() => {
+    serializePathv1(path);
+  }).toThrowError("Incorrect child value (bigger or equal to 0x80000000)");
+});
+
+test("serializePathv1 bigger than 0x80000000", async () => {
   const path = "m/44'/461'/0/0/2147483649";
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/bigger than 0x80000000/);
+  }).toThrowError("Incorrect child value (bigger or equal to 0x80000000)");
 });
 
 test("cidBytes", async () => {

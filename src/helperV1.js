@@ -34,7 +34,7 @@ export function serializePathv1(path) {
     }
 
     if (childNumber >= HARDENED) {
-      throw new Error("Incorrect child value (bigger than 0x80000000)");
+      throw new Error("Incorrect child value (bigger or equal to 0x80000000)");
     }
 
     value += childNumber;
