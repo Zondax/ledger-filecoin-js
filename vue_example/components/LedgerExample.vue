@@ -46,7 +46,7 @@ import TransportU2F from "@ledgerhq/hw-transport-u2f";
 
 import FilecoinApp from "../../src";
 
-const path = [44, 461, 5, 0, 3];
+const path = "m/44'/461'/0'/0/0";
 
 export default {
   name: "Ledger",
@@ -197,7 +197,7 @@ export default {
         this.log(`Test mode: ${response.test_mode}`);
 
         const message = Buffer.from(
-          "875501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a01430186a04209c44261a800",
+          "8a0055016b1f15eef5ae456c76d9559257703bdcc5bd3bec55016b1f15eef5ae456c76d9559257703bdcc5bd3bec0048002386f26fc100001a00084391440002445b4400023ffe0040",
           "hex",
         );
         response = await app.sign(path, message);

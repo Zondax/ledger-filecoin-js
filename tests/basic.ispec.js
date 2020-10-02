@@ -182,7 +182,7 @@ test("sign_and_verify", async () => {
     // Derivation path. First 3 items are automatically hardened!
     const path = "m/44'/461'/0'/0/0";
     const message = Buffer.from(
-      "885501fd1d0f4dfcd7e99afcb99a8326b7dc459d32c6285501b882619d46558f3d9e316d11b48dcf211327025a0144000186a0430009c4430061a80040",
+      "8a0055016b1f15eef5ae456c76d9559257703bdcc5bd3bec55016b1f15eef5ae456c76d9559257703bdcc5bd3bec0048002386f26fc100001a00084391440002445b4400023ffe0040",
       "hex",
     );
 
