@@ -3,7 +3,6 @@ import FilecoinApp from "index.js";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { expect, test } from "jest";
 import secp256k1 from "secp256k1/elliptic";
-import { Message } from "@glif/filecoin-message";
 import { ERROR_CODE, PKLEN } from "../src/common";
 import { getDigest } from "./utils";
 
@@ -220,9 +219,9 @@ test("sign_and_verify_testnet", async () => {
 
     const message = Buffer.from(
       "8a0055019f4c34943e4b92f4542bed08af54be955629fc6f5501ef8fd1e48a1e0f1a49310ec675bc677a3954147400430003e81903e84200014200010040",
-      "hex"
+      "hex",
     );
-    
+
     const responsePk = await app.getAddressAndPubKey(path);
     const responseSign = await app.sign(path, message);
 
