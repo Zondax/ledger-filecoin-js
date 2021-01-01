@@ -3,7 +3,6 @@ import FilecoinApp from "index.js";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { expect, test } from "jest";
 import secp256k1 from "secp256k1/elliptic";
-import Message from "@openworklabs/filecoin-message";
 import { ERROR_CODE, PKLEN } from "../src/common";
 import { getDigest } from "./utils";
 
@@ -47,12 +46,10 @@ test("getAddressAndPubKey", async () => {
 
     expect(resp.compressed_pk.length).toEqual(PKLEN);
     expect(resp.compressed_pk.toString("hex")).toEqual(
-      "04240ecf6ec722b701f051aaaffde7455a56e433139e4c0ff2ad7c8675e2cce104a8027ba13e5bc640ec9932cce184f33a789bb9c32f41e34328118b7862fc9ca2",
+      "0425d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d056042b50d0e70e4a2940428e82c7cea54259d65254aed4663e4d0cffd649f4fb",
     );
 
-    expect(resp.addrByte.toString("hex")).toEqual("0175a6b113220c2f71c4db420753aab2cef5edb6a8");
-
-    expect(resp.addrString).toEqual("f1owtlcezcbqxxdrg3iidvhkvsz3263nvijwpumui");
+    expect(resp.addrString).toEqual("f1mk3zcefvlgpay4f32c5vmruk5gqig6dumc7pz6q");
   } finally {
     transport.close();
   }
@@ -65,7 +62,7 @@ test("showAddressAndPubKey", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    const path = "m/44'/461'/0'/0/1";
+    const path = "m/44'/461'/5'/0/3";
     const resp = await app.showAddressAndPubKey(path);
 
     // eslint-disable-next-line no-console
@@ -80,12 +77,10 @@ test("showAddressAndPubKey", async () => {
 
     expect(resp.compressed_pk.length).toEqual(PKLEN);
     expect(resp.compressed_pk.toString("hex")).toEqual(
-      "04fc016f3d88dc7070cdd95b5754d32fd5290f850b7c2208fca0f715d35861de1841d9a342a487692a63810a6c906b443a18aa804d9d508d69facc5b06789a01b4",
+      "0425d0dbeedb2053e690a58e9456363158836b1361f30dba0332f440558fa803d056042b50d0e70e4a2940428e82c7cea54259d65254aed4663e4d0cffd649f4fb",
     );
 
-    expect(resp.addrByte.toString("hex")).toEqual("018bab69a28eeb4525bd8f49679a740a9582691906");
-
-    expect(resp.addrString).toEqual("f1rovwtiuo5ncslpmpjftzu5akswbgsgighjazxoi");
+    expect(resp.addrString).toEqual("f1mk3zcefvlgpay4f32c5vmruk5gqig6dumc7pz6q");
   } finally {
     transport.close();
   }
@@ -98,7 +93,7 @@ test("getAddressAndPubKeyTestnet", async () => {
   try {
     const app = new FilecoinApp(transport);
 
-    const path = [44, 1, 0, 0, 0];
+    const path = "m/44'/1'/0'/0/0";
     const resp = await app.getAddressAndPubKey(path);
 
     // eslint-disable-next-line no-console
@@ -113,12 +108,10 @@ test("getAddressAndPubKeyTestnet", async () => {
 
     expect(resp.compressed_pk.length).toEqual(PKLEN);
     expect(resp.compressed_pk.toString("hex")).toEqual(
-      "0466f2bdb19e90fd7c29e4bf63612eb98515e5163c97888042364ba777d818e88b765c649056ba4a62292ae4e2ccdabd71b845d8fa0991c140f664d2978ac0972a",
+      "0431fef770d890c1ee4f38efd0a24dfd5e2687416a3e7718035e380f0d0489ce176b91fba5c922bf5683e65df00a29df31c326c72160d0ece7c3a543dedfb605aa",
     );
 
-    expect(resp.addrByte.toString("hex")).toEqual("01dfe49184d46adc8f89d44638beb45f78fcad2590");
-
-    expect(resp.addrString).toEqual("t137sjdbgunloi7couiy4l5nc7pd6k2jmq32vizpy");
+    expect(resp.addrString).toEqual("t156h5dzekdyhrusjrb3dhlpdhpi4vifduelwsr4y");
   } finally {
     transport.close();
   }
@@ -182,7 +175,7 @@ test("sign_and_verify", async () => {
     // Derivation path. First 3 items are automatically hardened!
     const path = "m/44'/461'/0'/0/0";
     const message = Buffer.from(
-      "8a0055016b1f15eef5ae456c76d9559257703bdcc5bd3bec55016b1f15eef5ae456c76d9559257703bdcc5bd3bec0048002386f26fc100001a00084391440002445b4400023ffe0040",
+      "8a0058310396a1a3e4ea7a14d49985e661b22401d44fed402d1d0925b243c923589c0fbc7e32cd04e29ed78d15d37d3aaa3fe6da3358310386b454258c589475f7d16f5aac018a79f6c1169d20fc33921dd8b5ce1cac6c348f90a3603624f6aeb91b64518c2e80950144000186a01961a8430009c44200000040",
       "hex",
     );
 
@@ -222,19 +215,12 @@ test("sign_and_verify_testnet", async () => {
     const app = new FilecoinApp(transport);
 
     // Derivation path. First 3 items are automatically hardened!
-    const path = [44, 1, 0, 0, 0];
+    const path = "m/44'/1'/0'/0/0";
 
-    const messageContent = new Message({
-      from: "t137sjdbgunloi7couiy4l5nc7pd6k2jmq32vizpy",
-      to: "t1t5gdjfb6jojpivbl5uek6vf6svlct7dph5q2jwa",
-      value: "1000",
-      method: 0,
-      gasPrice: "1",
-      gasLimit: "1000",
-      nonce: 0,
-    });
-
-    const message = await messageContent.serialize();
+    const message = Buffer.from(
+      "8a0055019f4c34943e4b92f4542bed08af54be955629fc6f5501ef8fd1e48a1e0f1a49310ec675bc677a3954147400430003e81903e84200014200010040",
+      "hex",
+    );
 
     const responsePk = await app.getAddressAndPubKey(path);
     const responseSign = await app.sign(path, message);
