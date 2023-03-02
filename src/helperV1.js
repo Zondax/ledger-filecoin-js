@@ -13,7 +13,7 @@ export function serializePathv1(path) {
 
   const pathArray = path.split("/");
 
-  if (pathArray.length !== 6) {
+  if (pathArray.length !== 6 && pathArray.length !== 5) {
     throw new Error("Invalid path. (e.g \"m/44'/461'/5'/0/3\")");
   }
 

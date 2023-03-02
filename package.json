@@ -21,7 +21,8 @@
   "homepage": "https://github.com/zondax/ledger-filecoin-js",
   "dependencies": {
     "@babel/runtime": "^7.10.4",
-    "@ledgerhq/hw-transport": "^5.19.1"
+    "@ledgerhq/hw-transport": "^5.19.1",
+    "@ledgerhq/hw-app-eth": "6.29.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",

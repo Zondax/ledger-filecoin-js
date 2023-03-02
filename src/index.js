@@ -29,6 +29,9 @@ import {
   processErrorResponse,
 } from "./common";
 
+import Eth from '@ledgerhq/hw-app-eth'
+import { LedgerEthTransactionResolution, LoadConfig } from '@ledgerhq/hw-app-eth/lib/services/types'
+
 function processGetAddrResponse(response) {
   let partialResponse = response;
 
@@ -59,12 +62,14 @@ function processGetAddrResponse(response) {
 }
 
 export default class FilecoinApp {
-  constructor(transport, scrambleKey = APP_KEY) {
+  constructor(transport, scrambleKey = APP_KEY, ethScrambleKey = 'w0w', ethLoadConfig = {}){
     if (!transport) {
       throw new Error("Transport has not been defined");
     }
 
     this.transport = transport;
+    this.eth = new Eth(transport, ethScrambleKey, ethLoadConfig)
+
     transport.decorateAppAPIMethods(
       this,
       ["getVersion", "appInfo", "deviceInfo", "getAddressAndPubKey", "sign"],
@@ -283,5 +288,14 @@ export default class FilecoinApp {
         };
       }, processErrorResponse);
     }, processErrorResponse);
+  }
+
+  
+  async signETHTransaction(
+    path,
+    rawTxHex,
+    resolution = null,
+  ){
+    return this.eth.signTransaction(path, rawTxHex, resolution)
   }
 }
