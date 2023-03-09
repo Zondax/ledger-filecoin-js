@@ -1,4 +1,4 @@
-name: 'Publish packages'
+name: "Publish packages"
 
 on:
   release:
@@ -15,18 +15,18 @@ jobs:
       datetime: ${{ steps.get-datetime.outputs.datetime }}
     steps:
       - id: get-datetime
-        run: echo "::set-output name=datetime::$(date +'%Y%m%d%H%M%S')"
+        run: echo "datetime=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
   publish_npm_package:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@zondax'
+          registry-url: "https://registry.npmjs.org"
+          scope: "@zondax"
       - run: mv README-npm.md README.md
       - name: Install yarn
         run: npm install -g yarn
