@@ -15,6 +15,7 @@
  *  limitations under the License.
  ******************************************************************************* */
 
+import Eth from "@ledgerhq/hw-app-eth";
 import { serializePathv1, signSendChunkv1 } from "./helperV1";
 import {
   APP_KEY,
@@ -28,9 +29,6 @@ import {
   PKLEN,
   processErrorResponse,
 } from "./common";
-
-import Eth from '@ledgerhq/hw-app-eth'
-import { LedgerEthTransactionResolution, LoadConfig } from '@ledgerhq/hw-app-eth/lib/services/types'
 
 function processGetAddrResponse(response) {
   let partialResponse = response;
@@ -62,13 +60,13 @@ function processGetAddrResponse(response) {
 }
 
 export default class FilecoinApp {
-  constructor(transport, scrambleKey = APP_KEY, ethScrambleKey = 'w0w', ethLoadConfig = {}){
+  constructor(transport, scrambleKey = APP_KEY, ethScrambleKey = "w0w", ethLoadConfig = {}) {
     if (!transport) {
       throw new Error("Transport has not been defined");
     }
 
     this.transport = transport;
-    this.eth = new Eth(transport, ethScrambleKey, ethLoadConfig)
+    this.eth = new Eth(transport, ethScrambleKey, ethLoadConfig);
 
     transport.decorateAppAPIMethods(
       this,
@@ -123,15 +121,15 @@ export default class FilecoinApp {
 
   async getVersion() {
     return getVersion(this.transport)
-      .then(response => {
+      .then((response) => {
         this.versionResponse = response;
         return response;
       })
-      .catch(err => processErrorResponse(err));
+      .catch((err) => processErrorResponse(err));
   }
 
   async appInfo() {
-    return this.transport.send(0xb0, 0x01, 0, 0).then(response => {
+    return this.transport.send(0xb0, 0x01, 0, 0).then((response) => {
       const errorCodeData = response.slice(-2);
       const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
@@ -183,7 +181,7 @@ export default class FilecoinApp {
   async deviceInfo() {
     return this.transport
       .send(0xe0, 0x01, 0, 0, Buffer.from([]), [ERROR_CODE.NoError, 0x6e00])
-      .then(response => {
+      .then((response) => {
         const errorCodeData = response.slice(-2);
         const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
@@ -230,22 +228,22 @@ export default class FilecoinApp {
 
   async getAddressAndPubKey(path) {
     return this.serializePath(path)
-      .then(data => {
+      .then((data) => {
         return this.transport
           .send(CLA, INS.GET_ADDR_SECP256K1, P1_VALUES.ONLY_RETRIEVE, 0, data, [0x9000])
           .then(processGetAddrResponse, processErrorResponse);
       })
-      .catch(err => processErrorResponse(err));
+      .catch((err) => processErrorResponse(err));
   }
 
   async showAddressAndPubKey(path) {
     return this.serializePath(path)
-      .then(data => {
+      .then((data) => {
         return this.transport
           .send(CLA, INS.GET_ADDR_SECP256K1, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, data, [0x9000])
           .then(processGetAddrResponse, processErrorResponse);
       })
-      .catch(err => processErrorResponse(err));
+      .catch((err) => processErrorResponse(err));
   }
 
   async signSendChunk(chunkIdx, chunkNum, chunk) {
@@ -262,8 +260,8 @@ export default class FilecoinApp {
   }
 
   async sign(path, message) {
-    return this.signGetChunks(path, message).then(chunks => {
-      return this.signSendChunk(1, chunks.length, chunks[0], [ERROR_CODE.NoError]).then(async response => {
+    return this.signGetChunks(path, message).then((chunks) => {
+      return this.signSendChunk(1, chunks.length, chunks[0], [ERROR_CODE.NoError]).then(async (response) => {
         let result = {
           return_code: response.return_code,
           error_message: response.error_message,
@@ -290,12 +288,7 @@ export default class FilecoinApp {
     }, processErrorResponse);
   }
 
-  
-  async signETHTransaction(
-    path,
-    rawTxHex,
-    resolution = null,
-  ){
-    return this.eth.signTransaction(path, rawTxHex, resolution)
+  async signETHTransaction(path, rawTxHex, resolution = null) {
+    return this.eth.signTransaction(path, rawTxHex, resolution);
   }
 }
