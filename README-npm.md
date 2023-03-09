@@ -5,10 +5,7 @@
 [![GithubActions](https://github.com/zondax/ledger-filecoin-js/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-filecoin-js/blob/main/.github/workflows/main.yaml)
 [![CodeFactor](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js/badge)](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js)
 
-
 ![zondax_light](docs/zondax_light.png#gh-light-mode-only)
-![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
-
 
 This package provides a basic client library to communicate with a Tendermint/Cosmos App running in a Ledger Nano S/S+/X devices
 
