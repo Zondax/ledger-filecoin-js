@@ -5,15 +5,8 @@
     "node": true,
     "jest/globals": true
   },
-  "plugins": [
-    "jest",
-    "prettier"
-  ],
-  "extends": [
-    "airbnb-base",
-    "plugin:vue/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "plugins": ["jest", "prettier"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -27,9 +20,6 @@
     "import/prefer-default-export": "off",
     "vue/html-self-closing": "off",
     "vue/max-attributes-per-line": "off",
-    "import/no-unresolved": [
-      2,
-      { "caseSensitive": false }
-    ]
+    "import/no-unresolved": [2, { "caseSensitive": false }]
   }
 }
