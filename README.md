@@ -10,7 +10,7 @@
 ![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
 
 
-This package provides a basic client library to communicate with a Tendermint/Cosmos App running in a Ledger Nano S/S+/X devices
+This package provides a basic client library to communicate with a Filecoin App running in a Ledger Nano S/S+/X devices
 
 We recommend using the npmjs package in order to receive updates/fixes.
 
@@ -27,6 +27,7 @@ Use `yarn install` to avoid issues.
 | deviceInfo       | fw and mcu version, id, etc   | Only available in dashboard             |
 | sign       | signed message   | path + message                    |
 | signETHTransaction       | signed message   | path + message                    |
+| getETHAddress       | pubkey + address | path |
 
 
 
