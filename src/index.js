@@ -291,4 +291,17 @@ export default class FilecoinApp {
   async signETHTransaction(path, rawTxHex, resolution = null) {
     return this.eth.signTransaction(path, rawTxHex, resolution);
   }
+
+   // returns:
+   //     publicKey: string
+   //     address: string
+   //     chainCode?: string
+  async getETHAddress(
+    path,
+    boolDisplay = false,
+    boolChaincode = false,
+  ){
+    return this.eth.getAddress(path, boolDisplay, boolChaincode)
+  }
+
 }
