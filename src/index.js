@@ -261,59 +261,65 @@ export default class FilecoinApp {
 
   async sign(path, message) {
     return this.signGetChunks(path, message).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_SECP256K1, [ERROR_CODE.NoError]).then(async (response) => {
-        let result = {
-          return_code: response.return_code,
-          error_message: response.error_message,
-          signature_compact: null,
-          signature_der: null,
-        };
+      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_SECP256K1, [ERROR_CODE.NoError]).then(
+        async (response) => {
+          let result = {
+            return_code: response.return_code,
+            error_message: response.error_message,
+            signature_compact: null,
+            signature_der: null,
+          };
 
-        for (let i = 1; i < chunks.length; i += 1) {
-          // eslint-disable-next-line no-await-in-loop
-          result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_SECP256K1);
-          if (result.return_code !== ERROR_CODE.NoError) {
-            break;
+          for (let i = 1; i < chunks.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_SECP256K1);
+            if (result.return_code !== ERROR_CODE.NoError) {
+              break;
+            }
           }
-        }
 
-        return {
-          return_code: result.return_code,
-          error_message: result.error_message,
-          // ///
-          signature_compact: result.signature_compact,
-          signature_der: result.signature_der,
-        };
-      }, processErrorResponse);
+          return {
+            return_code: result.return_code,
+            error_message: result.error_message,
+            // ///
+            signature_compact: result.signature_compact,
+            signature_der: result.signature_der,
+          };
+        },
+        processErrorResponse,
+      );
     }, processErrorResponse);
   }
 
   async signRemoveDataCap(path, message) {
     return this.signGetChunks(path, message).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_DATA_CAP, [ERROR_CODE.NoError]).then(async (response) => {
-        let result = {
-          return_code: response.return_code,
-          error_message: response.error_message,
-          signature_compact: null,
-          signature_der: null,
-        };
+      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_DATA_CAP, [ERROR_CODE.NoError]).then(
+        async (response) => {
+          let result = {
+            return_code: response.return_code,
+            error_message: response.error_message,
+            signature_compact: null,
+            signature_der: null,
+          };
 
-        for (let i = 1; i < chunks.length; i += 1) {
-          // eslint-disable-next-line no-await-in-loop
-          result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_DATA_CAP);
-          if (result.return_code !== ERROR_CODE.NoError) {
-            break;
+          for (let i = 1; i < chunks.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_DATA_CAP);
+            if (result.return_code !== ERROR_CODE.NoError) {
+              break;
+            }
           }
-        }
 
-        return {
-          return_code: result.return_code,
-          error_message: result.error_message,
-          // ///
-          signature_compact: result.signature_compact,
-          signature_der: result.signature_der,
-        };
-      }, processErrorResponse);
+          return {
+            return_code: result.return_code,
+            error_message: result.error_message,
+            // ///
+            signature_compact: result.signature_compact,
+            signature_der: result.signature_der,
+          };
+        },
+        processErrorResponse,
+      );
     }, processErrorResponse);
   }
 

@@ -5,10 +5,8 @@
 [![GithubActions](https://github.com/zondax/ledger-filecoin-js/actions/workflows/main.yml/badge.svg)](https://github.com/Zondax/ledger-filecoin-js/blob/main/.github/workflows/main.yaml)
 [![CodeFactor](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js/badge)](https://www.codefactor.io/repository/github/zondax/ledger-filecoin-js)
 
-
 ![zondax_light](docs/zondax_light.png#gh-light-mode-only)
 ![zondax_dark](docs/zondax_dark.png#gh-dark-mode-only)
-
 
 This package provides a basic client library to communicate with a Filecoin App running in a Ledger Nano S/S+/X devices
 
@@ -18,18 +16,16 @@ Use `yarn install` to avoid issues.
 
 # Available commands
 
-| Operation  | Response         | Command                           |
-| ---------- | ---------------- | -----------------------           |
-| getVersion | app version      | ---------------                   |
-| getAddressAndPubKey | pubkey + address | path |
-| showAddressAndPubKey       | pubkey + address   | path (require user's confirmation)              |
-| appInfo       | name, version, flags, etc   | ---------------                |
-| deviceInfo       | fw and mcu version, id, etc   | Only available in dashboard             |
-| sign       | signed message   | path + message                    |
-| signETHTransaction       | signed message   | path + message                    |
-| getETHAddress       | pubkey + address | path |
-
-
+| Operation            | Response                    | Command                            |
+| -------------------- | --------------------------- | ---------------------------------- |
+| getVersion           | app version                 | ---------------                    |
+| getAddressAndPubKey  | pubkey + address            | path                               |
+| showAddressAndPubKey | pubkey + address            | path (require user's confirmation) |
+| appInfo              | name, version, flags, etc   | ---------------                    |
+| deviceInfo           | fw and mcu version, id, etc | Only available in dashboard        |
+| sign                 | signed message              | path + message                     |
+| signETHTransaction   | signed message              | path + message                     |
+| getETHAddress        | pubkey + address            | path                               |
 
 # Testing with real devices
 
