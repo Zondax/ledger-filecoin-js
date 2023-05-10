@@ -1,4 +1,4 @@
-import { CLA, errorCodeToString, INS, PAYLOAD_TYPE, processErrorResponse } from "./common";
+import { CLA, errorCodeToString, PAYLOAD_TYPE, processErrorResponse } from "./common";
 
 const HARDENED = 0x80000000;
 
