@@ -323,6 +323,38 @@ export default class FilecoinApp {
     }, processErrorResponse);
   }
 
+  async signClientDeal(path, message) {
+    return this.signGetChunks(path, message).then((chunks) => {
+      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_CLIENT_DEAL, [ERROR_CODE.NoError]).then(
+        async (response) => {
+          let result = {
+            return_code: response.return_code,
+            error_message: response.error_message,
+            signature_compact: null,
+            signature_der: null,
+          };
+
+          for (let i = 1; i < chunks.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_CLIENT_DEAL);
+            if (result.return_code !== ERROR_CODE.NoError) {
+              break;
+            }
+          }
+
+          return {
+            return_code: result.return_code,
+            error_message: result.error_message,
+            // ///
+            signature_compact: result.signature_compact,
+            signature_der: result.signature_der,
+          };
+        },
+        processErrorResponse,
+      );
+    }, processErrorResponse);
+  }
+
   async signETHTransaction(path, rawTxHex, resolution = null) {
     return this.eth.signTransaction(path, rawTxHex, resolution);
   }
