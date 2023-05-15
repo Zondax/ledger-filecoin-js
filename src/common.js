@@ -8,6 +8,7 @@ export const INS = {
   SIGN_SECP256K1: 0x02,
   SIGN_DATA_CAP: 0x05,
   SIGN_CLIENT_DEAL: 0x06,
+  SIGN_RAW_BYTES: 0x07,
 };
 
 export const PAYLOAD_TYPE = {
