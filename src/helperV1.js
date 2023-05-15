@@ -1,4 +1,4 @@
-import { CLA, errorCodeToString, INS, PAYLOAD_TYPE, processErrorResponse } from "./common";
+import { CLA, errorCodeToString, PAYLOAD_TYPE, processErrorResponse } from "./common";
 
 const HARDENED = 0x80000000;
 
@@ -45,7 +45,7 @@ export function serializePathv1(path) {
   return buf;
 }
 
-export async function signSendChunkv1(app, chunkIdx, chunkNum, chunk) {
+export async function signSendChunkv1(app, chunkIdx, chunkNum, chunk, ins) {
   let payloadType = PAYLOAD_TYPE.ADD;
   if (chunkIdx === 1) {
     payloadType = PAYLOAD_TYPE.INIT;
@@ -53,29 +53,27 @@ export async function signSendChunkv1(app, chunkIdx, chunkNum, chunk) {
   if (chunkIdx === chunkNum) {
     payloadType = PAYLOAD_TYPE.LAST;
   }
-  return app.transport
-    .send(CLA, INS.SIGN_SECP256K1, payloadType, 0, chunk, [0x9000, 0x6984, 0x6a80])
-    .then((response) => {
-      const errorCodeData = response.slice(-2);
-      const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
-      let errorMessage = errorCodeToString(returnCode);
+  return app.transport.send(CLA, ins, payloadType, 0, chunk, [0x9000, 0x6984, 0x6a80]).then((response) => {
+    const errorCodeData = response.slice(-2);
+    const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+    let errorMessage = errorCodeToString(returnCode);
 
-      if (returnCode === 0x6a80 || returnCode === 0x6984) {
-        errorMessage = `${errorMessage} : ${response.slice(0, response.length - 2).toString("ascii")}`;
-      }
+    if (returnCode === 0x6a80 || returnCode === 0x6984) {
+      errorMessage = `${errorMessage} : ${response.slice(0, response.length - 2).toString("ascii")}`;
+    }
 
-      let signatureCompact = null;
-      let signatureDER = null;
-      if (response.length > 2) {
-        signatureCompact = response.slice(0, 65);
-        signatureDER = response.slice(65, response.length - 2);
-      }
+    let signatureCompact = null;
+    let signatureDER = null;
+    if (response.length > 2) {
+      signatureCompact = response.slice(0, 65);
+      signatureDER = response.slice(65, response.length - 2);
+    }
 
-      return {
-        signature_compact: signatureCompact,
-        signature_der: signatureDER,
-        return_code: returnCode,
-        error_message: errorMessage,
-      };
-    }, processErrorResponse);
+    return {
+      signature_compact: signatureCompact,
+      signature_der: signatureDER,
+      return_code: returnCode,
+      error_message: errorMessage,
+    };
+  }, processErrorResponse);
 }

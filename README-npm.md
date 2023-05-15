@@ -15,15 +15,19 @@ Use `yarn install` to avoid issues.
 
 # Available commands
 
-| Operation  | Response         | Command                           |
-| ---------- | ---------------- | -----------------------           |
-| getVersion | app version      | ---------------                   |
-| getAddressAndPubKey | pubkey + address | path |
-| showAddressAndPubKey       | pubkey + address   | path (require user's confirmation)              |
-| appInfo       | name, version, flags, etc   | ---------------                |
-| deviceInfo       | fw and mcu version, id, etc   | Only available in dashboard             |
-| sign       | signed message   | path + message                    |
-| signETHTransaction       | signed message   | path + message                    |
+| Operation            | Response                    | Command                            |
+| -------------------- | --------------------------- | ---------------------------------- |
+| getVersion           | app version                 | ---------------                    |
+| getAddressAndPubKey  | pubkey + address            | path                               |
+| showAddressAndPubKey | pubkey + address            | path (require user's confirmation) |
+| appInfo              | name, version, flags, etc   | ---------------                    |
+| deviceInfo           | fw and mcu version, id, etc | Only available in dashboard        |
+| sign                 | signed message              | path + message                     |
+| signRemoveDataCap    | signed message              | path + message                     |
+| signClientDeal       | signed message              | path + message                     |
+| signRawBytes         | signed message              | path + message                     |
+| signETHTransaction   | signed message              | path + message                     |
+| getETHAddress        | pubkey + address            | path                               |
 
 
 
