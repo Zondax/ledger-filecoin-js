@@ -24,6 +24,9 @@ Use `yarn install` to avoid issues.
 | appInfo              | name, version, flags, etc   | ---------------                    |
 | deviceInfo           | fw and mcu version, id, etc | Only available in dashboard        |
 | sign                 | signed message              | path + message                     |
+| signRemoveDataCap    | signed message              | path + message                     |
+| signClientDeal       | signed message              | path + message                     |
+| signRawBytes         | signed message              | path + message                     |
 | signETHTransaction   | signed message              | path + message                     |
 | getETHAddress        | pubkey + address            | path                               |
 
