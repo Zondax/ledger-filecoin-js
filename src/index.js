@@ -30,8 +30,7 @@ import {
   processErrorResponse,
 } from "./common";
 
-var varint = require('varint')
-
+const varint = require("varint");
 
 function processGetAddrResponse(response) {
   let partialResponse = response;
@@ -360,9 +359,8 @@ export default class FilecoinApp {
 
   async signRawBytes(path, message) {
     const msg = Buffer.from(message);
-    const len = msg.length;
-    const enc_len = Buffer.from(varint.encode(len));
-    const data = Buffer.concat([enc_len, message])
+    const len = Buffer.from(varint.encode(msg.length));
+    const data = Buffer.concat([len, message]);
 
     return this.signGetChunks(path, data).then((chunks) => {
       return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_RAW_BYTES, [ERROR_CODE.NoError]).then(
