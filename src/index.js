@@ -261,9 +261,9 @@ export default class FilecoinApp {
     }
   }
 
-  async sign(path, message) {
+  async signGeneric(path, message, ins) {
     return this.signGetChunks(path, message).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_SECP256K1, [ERROR_CODE.NoError]).then(
+      return this.signSendChunk(1, chunks.length, chunks[0], ins, [ERROR_CODE.NoError]).then(
         async (response) => {
           let result = {
             return_code: response.return_code,
@@ -274,7 +274,7 @@ export default class FilecoinApp {
 
           for (let i = 1; i < chunks.length; i += 1) {
             // eslint-disable-next-line no-await-in-loop
-            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_SECP256K1);
+            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], ins);
             if (result.return_code !== ERROR_CODE.NoError) {
               break;
             }
@@ -291,70 +291,18 @@ export default class FilecoinApp {
         processErrorResponse,
       );
     }, processErrorResponse);
+  }
+
+  async sign(path, message) {
+    return this.signGeneric(path, message, INS.SIGN_SECP256K1);
   }
 
   async signRemoveDataCap(path, message) {
-    return this.signGetChunks(path, message).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_DATA_CAP, [ERROR_CODE.NoError]).then(
-        async (response) => {
-          let result = {
-            return_code: response.return_code,
-            error_message: response.error_message,
-            signature_compact: null,
-            signature_der: null,
-          };
-
-          for (let i = 1; i < chunks.length; i += 1) {
-            // eslint-disable-next-line no-await-in-loop
-            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_DATA_CAP);
-            if (result.return_code !== ERROR_CODE.NoError) {
-              break;
-            }
-          }
-
-          return {
-            return_code: result.return_code,
-            error_message: result.error_message,
-            // ///
-            signature_compact: result.signature_compact,
-            signature_der: result.signature_der,
-          };
-        },
-        processErrorResponse,
-      );
-    }, processErrorResponse);
+    return this.signGeneric(path, message, INS.SIGN_DATA_CAP);
   }
 
   async signClientDeal(path, message) {
-    return this.signGetChunks(path, message).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_CLIENT_DEAL, [ERROR_CODE.NoError]).then(
-        async (response) => {
-          let result = {
-            return_code: response.return_code,
-            error_message: response.error_message,
-            signature_compact: null,
-            signature_der: null,
-          };
-
-          for (let i = 1; i < chunks.length; i += 1) {
-            // eslint-disable-next-line no-await-in-loop
-            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_CLIENT_DEAL);
-            if (result.return_code !== ERROR_CODE.NoError) {
-              break;
-            }
-          }
-
-          return {
-            return_code: result.return_code,
-            error_message: result.error_message,
-            // ///
-            signature_compact: result.signature_compact,
-            signature_der: result.signature_der,
-          };
-        },
-        processErrorResponse,
-      );
-    }, processErrorResponse);
+    return this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
   }
 
   async signRawBytes(path, message) {
@@ -362,35 +310,7 @@ export default class FilecoinApp {
     const len = Buffer.from(varint.encode(msg.length));
     const data = Buffer.concat([len, message]);
 
-    return this.signGetChunks(path, data).then((chunks) => {
-      return this.signSendChunk(1, chunks.length, chunks[0], INS.SIGN_RAW_BYTES, [ERROR_CODE.NoError]).then(
-        async (response) => {
-          let result = {
-            return_code: response.return_code,
-            error_message: response.error_message,
-            signature_compact: null,
-            signature_der: null,
-          };
-
-          for (let i = 1; i < chunks.length; i += 1) {
-            // eslint-disable-next-line no-await-in-loop
-            result = await this.signSendChunk(1 + i, chunks.length, chunks[i], INS.SIGN_RAW_BYTES);
-            if (result.return_code !== ERROR_CODE.NoError) {
-              break;
-            }
-          }
-
-          return {
-            return_code: result.return_code,
-            error_message: result.error_message,
-            // ///
-            signature_compact: result.signature_compact,
-            signature_der: result.signature_der,
-          };
-        },
-        processErrorResponse,
-      );
-    }, processErrorResponse);
+    return this.signGeneric(path, data, INS.SIGN_RAW_BYTES);
   }
 
   async signETHTransaction(path, rawTxHex, resolution = null) {
