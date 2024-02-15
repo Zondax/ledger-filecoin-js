@@ -22,8 +22,9 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@ledgerhq/cryptoassets": "6.37.0",
-    "@ledgerhq/hw-app-eth": "6.29.7",
-    "@ledgerhq/hw-transport": "^6.28.1",
+    "@ledgerhq/hw-app-eth": "^6.35.5",
+    "@zondax/ledger-js": "^0.2.2",
+    "typescript": "^5.3.3",
     "varint": "^6.0.0"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@babel/node": "^7.18.10",
     "@babel/plugin-transform-runtime": "^7.18.9",
     "@babel/preset-env": "^7.18.9",
+    "@ledgerhq/hw-transport": "^6.30.4",
     "@ledgerhq/hw-transport-node-hid": "6.27.12",
     "@ledgerhq/hw-transport-webusb": "6.27.12",
     "@ledgerhq/logs": "^6.10.1",
@@ -42,7 +44,7 @@
     "bip39": "^3.1.0",
     "blake2": "^5.0.0",
     "core-js": "^3.15.2",
-    "crypto-js": "4.1.1",
+    "crypto-js": "^4.2.0",
     "eslint": "^8.22.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
@@ -56,7 +58,7 @@
     "secp256k1": "^5.0.0"
   },
   "scripts": {
-    "build": "babel src  --copy-files --out-dir dist",
+    "build": "tsc",
     "certificate": "openssl req -nodes -config certs/openssl.cnf  -new -x509 -keyout certs/server.key -out certs/server.cert; openssl x509 -in certs/server.cert -out certs/cert.pem -outform PEM",
     "test:unit": "jest -c jest.config.unit.js",
     "test:integration": "jest -c jest.config.integration.js --runInBand --detectOpenHandles",
