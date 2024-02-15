@@ -22,7 +22,7 @@ import Eth from "@ledgerhq/hw-app-eth";
 import Transport from "@ledgerhq/hw-transport";
 import { LedgerEthTransactionResolution } from "@ledgerhq/hw-app-eth/lib/services/types";
 
-import { getVersion, serializePathv1, signSendChunkv1 } from "./helperV1";
+import { getVersion, serializePathv1, signSendChunkv1 } from "./helper";
 import { ResponseAddress, ResponseAppInfo, ResponseDeviceInfo, ResponseSign, ResponseVersion } from "./types";
 import { APP_KEY, ERROR_CODE, CLA, INS, CHUNK_SIZE, PKLEN, P1_VALUES } from "./consts";
 
@@ -32,7 +32,7 @@ export * from "./types";
 
 const varint = require("varint");
 
-export function processGetAddrResponse(response: Buffer): ResponseAddress { 
+export function processGetAddrResponse(response: Buffer): ResponseAddress {
   let partialResponse = response;
 
   const errorCodeData = response.subarray(-2)
@@ -84,10 +84,11 @@ export default class FilecoinApp {
         end = buffer.length;
       }
       chunks.push(buffer.slice(i, end));
+
     }
     return chunks;
   }
-  
+
   async signGetChunks(path: string, message: Buffer): Promise<Buffer[]> {
     const serializedPath = await this.serializePath(path);
     return FilecoinApp.prepareChunks(serializedPath, message);
@@ -95,6 +96,7 @@ export default class FilecoinApp {
 
   async serializePath(path: string): Promise<Buffer> {
     this.versionResponse = await getVersion(this.transport);
+
 
     if (this.versionResponse.return_code !== ERROR_CODE.NoError) {
       throw this.versionResponse;
@@ -215,8 +217,7 @@ export default class FilecoinApp {
 
   async showAddressAndPubKey(path): Promise<ResponseAddress> {
     const serializedPath = await this.serializePath(path);
-    
-    return await this.transport 
+    return await this.transport
       .send(CLA, INS.GET_ADDR_SECP256K1, P1_VALUES.SHOW_ADDRESS_IN_DEVICE, 0, serializedPath, [0x9000])
       .then(processGetAddrResponse, processErrorResponse);
   }
@@ -237,7 +238,7 @@ export default class FilecoinApp {
       .then((chunks) => {
         return this.signSendChunk(1, chunks.length, chunks[0], ins)
           .then(async (response) => {
-            let result: ResponseSign = { 
+            let result: ResponseSign = {
               return_code: response.return_code,
               error_message: response.error_message,
               signature_compact: Buffer.alloc(0),
@@ -274,7 +275,7 @@ export default class FilecoinApp {
   async signClientDeal(path: string, message: Buffer): Promise<ResponseSign> {
     return this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
   }
-    
+
   async signRawBytes(path: string, message: Buffer): Promise<ResponseSign> {
     const len = Buffer.from(varint.encode(message.length));
     const data = Buffer.concat([len, message]);
