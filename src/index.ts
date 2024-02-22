@@ -16,25 +16,32 @@
  ******************************************************************************* */
 
 import Eth from "@ledgerhq/hw-app-eth";
-import type Transport from "@ledgerhq/hw-transport"
-import { LedgerEthTransactionResolution } from "@ledgerhq/hw-app-eth/lib/services/types";
+import type Transport from "@ledgerhq/hw-transport";
+import { type LedgerEthTransactionResolution } from "@ledgerhq/hw-app-eth/lib/services/types";
 
-import { ResponseAddress, ResponseAppInfo, ResponseSign, ResponseVersion } from "./types";
-import { APP_KEY, CLA, INS, CHUNK_SIZE, PKLEN, P1_VALUES } from "./consts";
+import { type SignTransaction, type ResponseAddress, type ResponseAppInfo, type ResponseSign, type ResponseVersion, type GetAddress } from "./types";
+import { APP_KEY, CLA, INS, CHUNK_SIZE, PKLEN } from "./consts";
 
-import GenericApp, { ConstructorParams, errorCodeToString, LedgerError, PAYLOAD_TYPE, processErrorResponse, ResponseBase } from "@zondax/ledger-js";
+import GenericApp, {
+  type ConstructorParams,
+  errorCodeToString,
+  LedgerError,
+  PAYLOAD_TYPE,
+  processErrorResponse,
+  type ResponseBase,
+} from "@zondax/ledger-js";
+
+import varint from "varint";
 
 export * from "./types";
-
-const varint = require("varint");
 
 export function processGetAddrResponse(response: Buffer): ResponseAddress {
   let partialResponse = response;
 
-  const errorCodeData = response.subarray(-2)
-  const returnCode = errorCodeData[0] * 256 + errorCodeData[1]
+  const errorCodeData = response.subarray(-2);
+  const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
 
-  const compressedPk = Buffer.from(partialResponse.subarray(0, PKLEN))
+  const compressedPk = Buffer.from(partialResponse.subarray(0, PKLEN));
   partialResponse = partialResponse.subarray(PKLEN);
 
   const addrByteLength = partialResponse[0];
@@ -52,14 +59,14 @@ export function processGetAddrResponse(response: Buffer): ResponseAddress {
     addrByte,
     addrString,
     compressedPk,
-    returnCode: returnCode,
+    returnCode,
     errorMessage: errorCodeToString(returnCode),
   };
 }
 
 export default class FilecoinApp extends GenericApp {
-  private eth: Eth;
-  versionResponse?: ResponseVersion
+  private readonly eth: Eth;
+  versionResponse?: ResponseVersion;
 
   constructor(transport: Transport, scrambleKey = APP_KEY, ethScrambleKey = "w0w", ethLoadConfig = {}) {
     if (transport == null) throw new Error("Transport has not been defined");
@@ -85,59 +92,59 @@ export default class FilecoinApp extends GenericApp {
   }
 
   async appInfo(): Promise<ResponseAppInfo> {
-    return this.transport
-      .send(0xb0, 0x01, 0, 0)
-      .then((response) => {
-        const errorCodeData = response.subarray(-2);
-        const returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+    return await this.transport.send(0xb0, 0x01, 0, 0).then((response) => {
+      const errorCodeData = response.subarray(-2);
+      let returnCode = errorCodeData[0] * 256 + errorCodeData[1];
+      let errorMessage = errorCodeToString(returnCode);
+      let appName = "err";
+      let appVersion = "err";
+      let flagLen = 0;
+      let flagsValue = 0;
 
-        let appName = "err";
-        let appVersion = "err";
-        let flagLen = 0;
-        let flagsValue = 0;
+      if (response[0] !== 1) {
+        // Ledger responds with format ID 1. There is no spec for any format != 1
+        errorMessage = "response format ID not recognized";
+        returnCode = 0x9001;
+      } else {
+        const appNameLen = response[1];
+        appName = response.subarray(2, 2 + appNameLen).toString("ascii");
+        let idx = 2 + appNameLen;
+        const appVersionLen = response[idx];
+        idx += 1;
+        appVersion = response.subarray(idx, idx + appVersionLen).toString("ascii");
+        idx += appVersionLen;
+        const appFlagsLen = response[idx];
+        idx += 1;
+        flagLen = appFlagsLen;
+        flagsValue = response[idx];
+      }
 
-        if (response[0] !== 1) {
-          // Ledger responds with format ID 1. There is no spec for any format != 1
-          const errorMessage = "response format ID not recognized";
-          const returnCode = 0x9001;
-        } else {
-          const appNameLen = response[1];
-          appName = response.subarray(2, 2 + appNameLen).toString("ascii");
-          let idx = 2 + appNameLen;
-          const appVersionLen = response[idx];
-          idx += 1;
-          appVersion = response.subarray(idx, idx + appVersionLen).toString("ascii");
-          idx += appVersionLen;
-          const appFlagsLen = response[idx];
-          idx += 1;
-          flagLen = appFlagsLen;
-          flagsValue = response[idx];
-        }
-
-        return {
-          returnCode: returnCode,
-          errorMessage: errorCodeToString(returnCode),
-          // //
-          appName,
-          appVersion,
-          flagLen,
-          flagsValue,
-          // eslint-disable-next-line no-bitwise
-          flagRecovery: (flagsValue & 1) !== 0,
-          // eslint-disable-next-line no-bitwise
-          flagSignedMcuCode: (flagsValue & 2) !== 0,
-          // eslint-disable-next-line no-bitwise
-          flagOnboarded: (flagsValue & 4) !== 0,
-          // eslint-disable-next-line no-bitwise
-          flagPinValidated: (flagsValue & 128) !== 0,
-        };
-      }, processErrorResponse);
+      return {
+        returnCode,
+        errorMessage,
+        // //
+        appName,
+        appVersion,
+        flagLen,
+        flagsValue,
+        // eslint-disable-next-line no-bitwise
+        flagRecovery: (flagsValue & 1) !== 0,
+        // eslint-disable-next-line no-bitwise
+        flagSignedMcuCode: (flagsValue & 2) !== 0,
+        // eslint-disable-next-line no-bitwise
+        flagOnboarded: (flagsValue & 4) !== 0,
+        // eslint-disable-next-line no-bitwise
+        flagPinValidated: (flagsValue & 128) !== 0,
+      };
+    }, processErrorResponse);
   }
 
   async getAddressAndPubKey(path: string): Promise<ResponseAddress> {
     const serializedPath = this.serializePath(path);
     return await this.transport
-      .send(this.CLA, this.INS.GET_ADDR_SECP256K1, this.P1_VALUES.ONLY_RETRIEVE, 0, serializedPath, [LedgerError.NoErrors])
+      .send(this.CLA, this.INS.GET_ADDR_SECP256K1, this.P1_VALUES.ONLY_RETRIEVE, 0, serializedPath, [
+        LedgerError.NoErrors,
+      ])
       .then(processGetAddrResponse, processErrorResponse);
   }
 
@@ -175,7 +182,7 @@ export default class FilecoinApp extends GenericApp {
 
         let signatureCompact = Buffer.alloc(0);
         let signatureDER = Buffer.alloc(0);
-        
+
         if (
           returnCode === LedgerError.BadKeyHandle ||
           returnCode === LedgerError.DataIsInvalid ||
@@ -187,24 +194,24 @@ export default class FilecoinApp extends GenericApp {
           signatureCompact = response.subarray(0, 65);
           signatureDER = response.subarray(65, response.length - 2);
         }
-    
+
         return {
-          signatureCompact: signatureCompact,
-          signatureDER: signatureDER,
-          returnCode: returnCode,
-          errorMessage: errorMessage,
+          signatureCompact,
+          signatureDER,
+          returnCode,
+          errorMessage,
         };
       }, processErrorResponse);
   }
 
   async sign(path: string, message: Buffer): Promise<ResponseSign> {
-    return this.signGeneric(path, message, INS.SIGN_SECP256K1);
+    return await this.signGeneric(path, message, INS.SIGN_SECP256K1);
   }
 
   async signGeneric(path: string, message: Buffer, txtype: number): Promise<ResponseSign> {
     const chunks = this.prepareChunks(path, message);
     return await this.signSendChunk(1, chunks.length, chunks[0], txtype).then(async (response) => {
-      let result: ResponseSign  | ResponseBase= {
+      let result: ResponseSign | ResponseBase = {
         returnCode: response.returnCode,
         errorMessage: response.errorMessage,
       };
@@ -221,28 +228,26 @@ export default class FilecoinApp extends GenericApp {
   }
 
   async signRemoveDataCap(path: string, message: Buffer): Promise<ResponseSign> {
-    return this.signGeneric(path, message, INS.SIGN_DATA_CAP);
+    return await this.signGeneric(path, message, INS.SIGN_DATA_CAP);
   }
 
   async signClientDeal(path: string, message: Buffer): Promise<ResponseSign> {
-    return this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
+    return await this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
   }
 
   async signRawBytes(path: string, message: Buffer): Promise<ResponseSign> {
     const len = Buffer.from(varint.encode(message.length));
+
     const data = Buffer.concat([len, message]);
 
-    return this.signGeneric(path, data, INS.SIGN_RAW_BYTES);
+    return await this.signGeneric(path, data, INS.SIGN_RAW_BYTES);
   }
 
-  async signETHTransaction(path: string, rawTxHex: string, resolution?: LedgerEthTransactionResolution | null) {
-    return this.eth.signTransaction(path, rawTxHex, resolution);
+  async signETHTransaction(path: string, rawTxHex: string, resolution?: LedgerEthTransactionResolution | null): Promise<SignTransaction> {
+    return await this.eth.signTransaction(path, rawTxHex, resolution);
   }
 
-  async getETHAddress(path: string, boolDisplay?: boolean, boolChaincode?: boolean) {
-      return this.eth.getAddress(path, boolDisplay, boolChaincode);
+  async getETHAddress(path: string, boolDisplay?: boolean, boolChaincode?: boolean): Promise<GetAddress> {
+    return await this.eth.getAddress(path, boolDisplay, boolChaincode);
   }
-
 }
-
-
