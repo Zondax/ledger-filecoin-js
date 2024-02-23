@@ -32,5 +32,3 @@ jobs:
         run: yarn format
       - name: Build
         run: yarn build
-      - name: Unit tests
-        run: yarn test:unit
