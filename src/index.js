@@ -297,10 +297,6 @@ export default class FilecoinApp {
     return this.signGeneric(path, message, INS.SIGN_SECP256K1);
   }
 
-  async signRemoveDataCap(path, message) {
-    return this.signGeneric(path, message, INS.SIGN_DATA_CAP);
-  }
-
   async signClientDeal(path, message) {
     return this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
   }
