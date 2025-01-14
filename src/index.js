@@ -299,10 +299,6 @@ export default class FilecoinApp {
     return this.signGeneric(path, message, INS.SIGN_SECP256K1);
   }
 
-  async signClientDeal(path, message) {
-    return this.signGeneric(path, message, INS.SIGN_CLIENT_DEAL);
-  }
-
   async signRawBytes(path, message) {
     const msg = Buffer.from(message);
     const len = Buffer.from(varint.encode(msg.length));
