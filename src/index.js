@@ -169,13 +169,13 @@ export default class FilecoinApp {
         appVersion,
         flagLen,
         flagsValue,
-        // eslint-disable-next-line no-bitwise
+
         flag_recovery: (flagsValue & 1) !== 0,
-        // eslint-disable-next-line no-bitwise
+
         flag_signed_mcu_code: (flagsValue & 2) !== 0,
-        // eslint-disable-next-line no-bitwise
+
         flag_onboarded: (flagsValue & 4) !== 0,
-        // eslint-disable-next-line no-bitwise
+
         flag_pin_validated: (flagsValue & 128) !== 0,
       };
     }, processErrorResponse);
@@ -275,7 +275,6 @@ export default class FilecoinApp {
           };
 
           for (let i = 1; i < chunks.length; i += 1) {
-            // eslint-disable-next-line no-await-in-loop
             result = await this.signSendChunk(1 + i, chunks.length, chunks[i], ins);
             if (result.return_code !== ERROR_CODE.NoError) {
               break;

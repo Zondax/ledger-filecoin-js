@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 import * as bip39 from "bip39";
-import * as bip32 from "bip32";
+import { BIP32Factory } from "bip32";
+import * as ecc from "tiny-secp256k1";
 import secp256k1 from "secp256k1/elliptic";
 import { expect, test } from "./jest";
+
+const bip32 = BIP32Factory(ecc);
 
 test("hex to base64", async () => {
   const hex =
