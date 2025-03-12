@@ -27,8 +27,6 @@ Use `yarn install` to avoid issues.
 | signETHTransaction   | signed message              | path + message                     |
 | getETHAddress        | pubkey + address            | path                               |
 
-
-
 # Testing with real devices
 
 It is possible to test this package with a real Ledger Nano device. To accomplish that, you will need to follow these steps:
