@@ -11,7 +11,6 @@ test("get version", async () => {
   try {
     const app = new FilecoinApp(transport);
     const resp = await app.getVersion();
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -34,7 +33,6 @@ test("getAddressAndPubKey", async () => {
     const path = "m/44'/461'/5'/0/3";
     const resp = await app.getAddressAndPubKey(path);
 
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -65,7 +63,6 @@ test("showAddressAndPubKey", async () => {
     const path = "m/44'/461'/5'/0/3";
     const resp = await app.showAddressAndPubKey(path);
 
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(0x9000);
@@ -96,7 +93,6 @@ test("getAddressAndPubKeyTestnet", async () => {
     const path = "m/44'/1'/0'/0/0";
     const resp = await app.getAddressAndPubKey(path);
 
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(0x9000);
@@ -124,7 +120,6 @@ test("appInfo", async () => {
 
     const resp = await app.appInfo();
 
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -150,7 +145,6 @@ test("deviceInfo", async () => {
 
     const resp = await app.deviceInfo();
 
-    // eslint-disable-next-line no-console
     console.log(resp);
 
     expect(resp.return_code).toEqual(ERROR_CODE.NoError);
@@ -273,7 +267,6 @@ test("sign_invalid", async () => {
 
     const responseSign = await app.sign(path, invalidMessage);
 
-    // eslint-disable-next-line no-console
     console.log(responseSign);
     expect(responseSign.return_code).toEqual(0x6984);
     expect(responseSign.error_message).toEqual("Data is invalid : Unexpected data type");

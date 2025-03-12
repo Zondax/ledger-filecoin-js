@@ -52,7 +52,9 @@ const ERROR_DESCRIPTION = {
 };
 
 export function errorCodeToString(statusCode) {
-  if (statusCode in ERROR_DESCRIPTION) return ERROR_DESCRIPTION[statusCode];
+  if (statusCode in ERROR_DESCRIPTION) {
+    return ERROR_DESCRIPTION[statusCode];
+  }
   return `Unknown Status Code: ${statusCode}`;
 }
 
@@ -96,9 +98,7 @@ export async function getVersion(transport) {
 
     let targetId = 0;
     if (response.length >= 9) {
-      /* eslint-disable no-bitwise */
       targetId = (response[5] << 24) + (response[6] << 16) + (response[7] << 8) + (response[8] << 0);
-      /* eslint-enable no-bitwise */
     }
 
     return {
