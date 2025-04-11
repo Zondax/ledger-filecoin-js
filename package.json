@@ -22,7 +22,7 @@
   "dependencies": {
     "@babel/runtime": "^7.26.10",
     "@ledgerhq/cryptoassets": "13.13.0",
-    "@ledgerhq/hw-app-eth": "6.42.9",
+    "@ledgerhq/hw-app-eth": "6.45.0",
     "@ledgerhq/hw-transport": "^6.31.4",
     "varint": "^6.0.0"
   },
