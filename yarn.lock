@@ -1934,12 +1934,12 @@
     "@ledgerhq/live-env" "^2.6.0"
     axios "1.7.7"
 
-"@ledgerhq/cryptoassets@13.13.0":
-  version "13.13.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/cryptoassets/-/cryptoassets-13.13.0.tgz#9da036ac92cb75a3d12b3801b6b995c3164ca170"
-  integrity sha512-Egl86pXuyGdvGwwTwnq8NxzDBixqs1uImQtA79FuBFb0c3zgHjDsFUAmsuzz+xMbT3U0FyaW7G8rDLzYuApoCQ==
+"@ledgerhq/cryptoassets@13.20.0":
+  version "13.20.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/cryptoassets/-/cryptoassets-13.20.0.tgz#df9f8435f16cc6338e3a0980b187bf753b9b951c"
+  integrity sha512-l87sXhcPtQIbwWWbeHHclpj1lVcF/adOpUAga8zfI4HGzysj6+9e8ev94vUtwoNWQpVABAJwF0ytdT5AjQvdGw==
   dependencies:
-    "@ledgerhq/live-env" "^2.6.0"
+    "@ledgerhq/live-env" "^2.11.0"
     axios "1.7.7"
     bs58check "^2.1.2"
     invariant "2"
@@ -2058,10 +2058,10 @@
     "@ledgerhq/logs" "^6.12.0"
     events "^3.3.0"
 
-"@ledgerhq/live-env@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/live-env/-/live-env-2.6.0.tgz#33e0393f1f3513b4f4175b6f7ca9250bbab38af9"
-  integrity sha512-g+YSOvzgjTavd0oQooH9VzLabPyJs5X1Tgn8jG1iDKO8PBPTSLCH8V4L4bFcT73druY+jgUA0gatPDqYStR9yw==
+"@ledgerhq/live-env@^2.11.0", "@ledgerhq/live-env@^2.6.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/live-env/-/live-env-2.11.0.tgz#94e48a6c4a8ceaf1586abe0f12eb209d4b7bc184"
+  integrity sha512-7xVQfi1IdifCS50LDX7qpEkrl8fa5s4MnETM7igJcmIeIE2qIGddBnjyToh/CIbJ1benBVZBY23iJmwul4/IhQ==
   dependencies:
     rxjs "^7.8.1"
     utility-types "^3.10.0"
@@ -2523,21 +2523,12 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@1.7.7:
+axios@1.7.7, axios@^1.2.1:
   version "1.7.7"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.7.tgz#2f554296f9892a72ac8d8e4c5b79c14a91d0a47f"
   integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
   dependencies:
     follow-redirects "^1.15.6"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
-axios@^1.2.1:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.4.0.tgz"
-  integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
-  dependencies:
-    follow-redirects "^1.15.0"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -3835,11 +3826,6 @@ flatted@^3.2.9:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.3.tgz#67c8fad95454a7c7abebf74bb78ee74a44023358"
   integrity sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==
-
-follow-redirects@^1.15.0:
-  version "1.15.6"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
-  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 follow-redirects@^1.15.6:
   version "1.15.9"
