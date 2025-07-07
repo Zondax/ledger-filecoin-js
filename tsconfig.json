@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es2020",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist",
+      "rootDir": "./",
+      "resolveJsonModule": true,
+      "declaration": true,
+      "allowJs": true
+    },
+    "include": ["src/**/*.js", "tests/**/*.js", "*.js", "eslint.config.js"],
+    "exclude": ["node_modules", "dist"]
+  }
+  

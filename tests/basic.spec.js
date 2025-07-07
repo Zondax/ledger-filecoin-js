@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import blake2 from "blake2";
 import secp256k1 from "secp256k1/elliptic";
-import { expect, test } from "./jest";
+import { expect, test } from "@jest/globals";
 import { getCID, getDigest } from "./utils";
 import { serializePathv1 } from "../src/helperV1";
 
@@ -24,7 +24,7 @@ test("serializePathv1 should be a string", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Path should be a string/);
+  }).toThrow(/Path should be a string/);
 });
 
 test("serializePathv1 doesn't start with 'm'", async () => {
@@ -32,7 +32,7 @@ test("serializePathv1 doesn't start with 'm'", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Path should start with "m"/);
+  }).toThrow(/Path should start with "m"/);
 });
 
 test("serializePathv1 length needs to be 5", async () => {
@@ -40,7 +40,7 @@ test("serializePathv1 length needs to be 5", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Invalid path/);
+  }).toThrow(/Invalid path/);
 });
 
 test("serializePathv1 invalid number", async () => {
@@ -48,7 +48,7 @@ test("serializePathv1 invalid number", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError(/Invalid path : l is not a number/);
+  }).toThrow(/Invalid path : l is not a number/);
 });
 
 test("serializePathv1 bigger than 0x80000000", async () => {
@@ -56,7 +56,7 @@ test("serializePathv1 bigger than 0x80000000", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError("Incorrect child value (bigger or equal to 0x80000000)");
+  }).toThrow("Incorrect child value (bigger or equal to 0x80000000)");
 });
 
 test("serializePathv1 bigger than 0x80000000", async () => {
@@ -64,7 +64,7 @@ test("serializePathv1 bigger than 0x80000000", async () => {
 
   expect(() => {
     serializePathv1(path);
-  }).toThrowError("Incorrect child value (bigger or equal to 0x80000000)");
+  }).toThrow("Incorrect child value (bigger or equal to 0x80000000)");
 });
 
 test("cidBytes", async () => {

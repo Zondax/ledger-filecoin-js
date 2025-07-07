@@ -32,6 +32,11 @@ import {
 
 const varint = require("varint");
 
+export const CHAIN_TYPE = {
+  EVM: 0,
+  FVM: 1,
+};
+
 function processGetAddrResponse(response) {
   let partialResponse = response;
 
@@ -312,5 +317,21 @@ export default class FilecoinApp {
 
   async getETHAddress(path, boolDisplay = false, boolChaincode = false) {
     return this.eth.getAddress(path, boolDisplay, boolChaincode);
+  }
+
+  async signPersonalMessage(path, messageHex, chainType = CHAIN_TYPE.EVM) {
+    if (typeof path !== "string" || !path) {
+      throw new Error("Invalid or missing 'path' parameter");
+    }
+    if (typeof messageHex !== "string" || !/^[0-9a-fA-F]*$/.test(messageHex)) {
+      throw new Error("Invalid or missing 'messageHex' parameter; must be a hex string");
+    }
+
+    switch (chainType) {
+      case CHAIN_TYPE.EVM:
+        return this.eth.signPersonalMessage(path, messageHex);
+      default:
+        throw new Error(`Unsupported chain type: ${chainType}`);
+    }
   }
 }

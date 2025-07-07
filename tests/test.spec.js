@@ -3,7 +3,7 @@ import * as bip39 from "bip39";
 import { BIP32Factory } from "bip32";
 import * as ecc from "tiny-secp256k1";
 import secp256k1 from "secp256k1/elliptic";
-import { expect, test } from "./jest";
+import { expect, test } from "@jest/globals";
 
 const bip32 = BIP32Factory(ecc);
 
