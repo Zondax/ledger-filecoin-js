@@ -7,6 +7,7 @@ export const INS = {
   GET_ADDR_SECP256K1: 0x01,
   SIGN_SECP256K1: 0x02,
   SIGN_RAW_BYTES: 0x07,
+  SIGN_PERSONAL_MESSAGE: 0x08,
 };
 
 export const PAYLOAD_TYPE = {
