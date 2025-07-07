@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import blake2 from "blake2";
 import secp256k1 from "secp256k1/elliptic";
-import { expect, test } from "./jest";
+import { expect, test } from "@jest/globals";
 import { getCID, getDigest } from "./utils";
 import { serializePathv1 } from "../src/helperV1";
 
