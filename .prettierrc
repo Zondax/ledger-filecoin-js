@@ -5,7 +5,7 @@
   "useTabs": false,
   "printWidth": 140,
   "tabWidth": 2,
-  "importOrder": ["^@(.*)/(.*)$", "^[./]"],
+  "importOrder": ["^@(.*)/(.*)$", "^([a-z]|node:).*$", "^[./]"],
   "trailingComma": "es5",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrderSeparation": true,

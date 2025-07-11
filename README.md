@@ -5,7 +5,7 @@
 
 This package provides a basic client library to communicate with the Filecoin App running in a Ledger Nano S+/X, Flex and Stax
 
-We recommend using the npmjs package in order to receive updates/fixes.
+We recommend using the npmjs package to receive updates/fixes.
 
 ## Notes
 

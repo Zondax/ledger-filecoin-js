@@ -4,6 +4,8 @@
     "moduleResolution": "node",
     "target": "es2020",
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,

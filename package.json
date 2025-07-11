@@ -34,16 +34,19 @@
     "test": "yarn build && jest",
     "upgrade": "bunx npm-check-updates -i"
   },
+  "resolutions": {
+    "glob": "^10.4.0"
+  },
   "dependencies": {
     "@ledgerhq/hw-app-eth": "6.45.10",
-    "@zondax/ledger-js": "^1.2.0",
-    "varint": "^6.0.0"
+    "@zondax/ledger-js": "^1.2.0"
   },
   "devDependencies": {
     "@ledgerhq/hw-transport-mocker": "^6.29.7",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/jest": "30.0.0",
     "@types/node": "^24.0.13",
+    "@types/varint": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.30.1",
@@ -59,8 +62,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "resolutions": {
-    "glob": "^10.4.0"
   }
 }

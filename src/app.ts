@@ -17,10 +17,11 @@ import Eth from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import BaseApp, { BIP32Path, INSGeneric, processErrorResponse, processResponse } from '@zondax/ledger-js'
 
+import * as varint from 'varint'
+
 import { P1_VALUES, PUBKEYLEN } from './consts'
 import { ResponseAddress, ResponseSign } from './types'
 
-const varint = require('varint')
 export class FilecoinApp extends BaseApp {
   private eth: Eth
 
@@ -66,7 +67,7 @@ export class FilecoinApp extends BaseApp {
     const bip44PathBuffer = this.serializePath(path)
 
     try {
-      const responseBuffer = await this.transport.send(this.CLA, this.INS.GET_ADDR_SECP256K1, P1_VALUES.ONLY_RETRIEVE, 0, bip44PathBuffer)
+      const responseBuffer = await this.transport.send(this.CLA, this.INS.GET_ADDR_SECP256K1!, P1_VALUES.ONLY_RETRIEVE, 0, bip44PathBuffer)
 
       const response = processResponse(responseBuffer)
 
@@ -82,7 +83,7 @@ export class FilecoinApp extends BaseApp {
     try {
       const responseBuffer = await this.transport.send(
         this.CLA,
-        this.INS.GET_ADDR_SECP256K1,
+        this.INS.GET_ADDR_SECP256K1!,
         P1_VALUES.SHOW_ADDRESS_IN_DEVICE,
         0,
         bip44PathBuffer
@@ -100,10 +101,10 @@ export class FilecoinApp extends BaseApp {
     const chunks = this.prepareChunks(path, data)
     try {
       // First chunk
-      let signatureResponse = await this.sendGenericChunk(instruction, 0, 1, chunks.length, chunks[0])
+      let signatureResponse = await this.sendGenericChunk(instruction, 0, 1, chunks.length, chunks[0]!)
 
       for (let i = 1; i < chunks.length; i += 1) {
-        signatureResponse = await this.sendGenericChunk(instruction, 0, 1 + i, chunks.length, chunks[i])
+        signatureResponse = await this.sendGenericChunk(instruction, 0, 1 + i, chunks.length, chunks[i]!)
       }
 
       return {
@@ -116,14 +117,14 @@ export class FilecoinApp extends BaseApp {
   }
 
   async sign(path: BIP32Path, blob: Buffer): Promise<ResponseSign> {
-    return this._sign(this.INS.SIGN_SECP256K1, path, blob)
+    return this._sign(this.INS.SIGN_SECP256K1!, path, blob)
   }
 
   async signRawBytes(path: BIP32Path, message: Buffer) {
     const len = Buffer.from(varint.encode(message.length))
     const data = Buffer.concat([len, message])
 
-    return this._sign(this.INS.SIGN_RAW_BYTES, path, data)
+    return this._sign(this.INS.SIGN_RAW_BYTES!, path, data)
   }
 
   async signPersonalMessageFVM(path: BIP32Path, messageHex: Buffer) {
@@ -131,7 +132,7 @@ export class FilecoinApp extends BaseApp {
     len.writeUInt32BE(messageHex.length, 0)
     const data = Buffer.concat([len, messageHex])
 
-    return this._sign(this.INS.SIGN_PERSONAL_MESSAGE, path, data)
+    return this._sign(this.INS.SIGN_PERSONAL_MESSAGE!, path, data)
   }
 
   async signETHTransaction(path: BIP32Path, rawTxHex: string, resolution = null) {
