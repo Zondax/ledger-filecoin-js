@@ -319,6 +319,15 @@ export default class FilecoinApp {
     return this.eth.getAddress(path, boolDisplay, boolChaincode);
   }
 
+  async signPersonalMessageFVM(path, messageHex) {
+    const msg = Buffer.from(messageHex, "hex");
+    const len = Buffer.alloc(4);
+    len.writeUInt32BE(msg.length, 0);
+    const data = Buffer.concat([len, msg]);
+    const result = await this.signGeneric(path, data, INS.SIGN_PERSONAL_MESSAGE);
+    return result;
+  }
+
   async signPersonalMessage(path, messageHex, chainType = CHAIN_TYPE.EVM) {
     if (typeof path !== "string" || !path) {
       throw new Error("Invalid or missing 'path' parameter");
@@ -330,6 +339,8 @@ export default class FilecoinApp {
     switch (chainType) {
       case CHAIN_TYPE.EVM:
         return this.eth.signPersonalMessage(path, messageHex);
+      case CHAIN_TYPE.FVM:
+        return this.signPersonalMessageFVM(path, messageHex);
       default:
         throw new Error(`Unsupported chain type: ${chainType}`);
     }
