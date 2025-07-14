@@ -1,4 +1,4 @@
-name: "Publish packages"
+name: 'Publish packages'
 
 on:
   release:
@@ -25,9 +25,17 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v4
         with:
-          registry-url: "https://registry.npmjs.org"
-          scope: "@zondax"
-      - run: mv README-npm.md README.md
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@zondax'
+      - name: Prepare README for npm
+        run: |
+          # Create a new README with the modified content
+          {
+              head -n 2 README.md
+              echo "![zondax](docs/zondax_light.png)"
+              tail -n +4 README.md
+          } > README.md.tmp
+          mv README.md.tmp README.md
       - name: Install yarn
         run: npm install -g yarn
       - run: yarn install
