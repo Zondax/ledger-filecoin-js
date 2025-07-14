@@ -7,6 +7,33 @@ This package provides a basic client library to communicate with the Filecoin Ap
 
 We recommend using the npmjs package to receive updates/fixes.
 
+## Development
+
+### Available Scripts
+
+```bash
+# Build the project
+yarn build
+
+# Format code and sort package.json
+yarn format
+
+# Check formatting
+yarn format:check
+
+# Run linter
+yarn lint
+
+# Fix linting issues
+yarn lint:fix
+
+# Run tests (builds first)
+yarn test
+
+# Check for dependency updates
+yarn upgrade
+```
+
 ## Notes
 
 Use `yarn install` to avoid issues.
