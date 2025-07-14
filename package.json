@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "@ledgerhq/hw-app-eth": "6.45.10",
-    "@zondax/ledger-js": "^1.2.0"
+    "@zondax/ledger-js": "^1.2.0",
+    "varint": "^6.0.0"
   },
   "devDependencies": {
     "@ledgerhq/hw-transport-mocker": "^6.29.7",
