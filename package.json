@@ -38,7 +38,7 @@
     "glob": "^10.4.0"
   },
   "dependencies": {
-    "@ledgerhq/hw-app-eth": "6.45.10",
+    "@ledgerhq/hw-app-eth": "6.45.13",
     "@zondax/ledger-js": "^1.2.0",
     "varint": "^6.0.0"
   },
