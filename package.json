@@ -43,7 +43,7 @@
     "varint": "^6.0.0"
   },
   "devDependencies": {
-    "@ledgerhq/hw-transport-mocker": "^6.29.7",
+    "@ledgerhq/hw-transport-mocker": "^6.29.9",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/jest": "30.0.0",
     "@types/node": "^24.0.13",
