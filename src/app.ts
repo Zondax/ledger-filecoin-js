@@ -116,18 +116,18 @@ export class FilecoinApp extends BaseApp {
     }
   }
 
-  async sign(path: BIP32Path, blob: Buffer): Promise<ResponseSign> {
+  sign(path: BIP32Path, blob: Buffer): Promise<ResponseSign> {
     return this._sign(this.INS.SIGN_SECP256K1!, path, blob)
   }
 
-  async signRawBytes(path: BIP32Path, message: Buffer) {
+  signRawBytes(path: BIP32Path, message: Buffer) {
     const len = Buffer.from(varint.encode(message.length))
     const data = Buffer.concat([len, message])
 
     return this._sign(this.INS.SIGN_RAW_BYTES!, path, data)
   }
 
-  async signPersonalMessageFVM(path: BIP32Path, messageHex: Buffer) {
+  signPersonalMessageFVM(path: BIP32Path, messageHex: Buffer) {
     const len = Buffer.alloc(4)
     len.writeUInt32BE(messageHex.length, 0)
     const data = Buffer.concat([len, messageHex])
