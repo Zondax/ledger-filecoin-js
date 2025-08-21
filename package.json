@@ -1,6 +1,7 @@
 {
   "name": "@zondax/ledger-filecoin",
   "version": "1.0.0",
+  "type": "module",
   "description": "Node API for the Filecoin App (Ledger Nano S+, X, Stax and Flex)",
   "keywords": [
     "Zondax",
