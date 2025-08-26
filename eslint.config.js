@@ -1,9 +1,9 @@
-import unusedImports from 'eslint-plugin-unused-imports';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import tsdoc from 'eslint-plugin-tsdoc';
+const unusedImports = require('eslint-plugin-unused-imports');
+const typescriptEslint = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
+const tsdoc = require('eslint-plugin-tsdoc');
 
-export default [
+module.exports = [
   {
     ignores: ['dist/**', 'node_modules/**', 'eslint.config.js', 'jest.config.js'],
   },
@@ -15,7 +15,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
       globals: {
         window: 'readonly',
