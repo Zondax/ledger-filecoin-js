@@ -863,6 +863,16 @@
     rxjs "^7.8.1"
     semver "^7.3.5"
 
+"@ledgerhq/devices@8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-8.6.0.tgz#b97381e40ff6a47c065d2f51a580922f909b1e82"
+  integrity sha512-ISp5g6OfWr3WnAvmph0/iEHpFvWRDflRfhZH1/oDeXb/okmmAimKOnSUCMC0voOAou7CEoMTCtRkelHPok41Yg==
+  dependencies:
+    "@ledgerhq/errors" "^6.25.0"
+    "@ledgerhq/logs" "^6.13.0"
+    rxjs "^7.8.1"
+    semver "^7.3.5"
+
 "@ledgerhq/domain-service@^1.2.40":
   version "1.2.40"
   resolved "https://registry.npmjs.org/@ledgerhq/domain-service/-/domain-service-1.2.40.tgz#22a081b2946c2472390f7e01e7a852bca3181b1f"
@@ -880,6 +890,11 @@
   version "6.24.0"
   resolved "https://registry.npmjs.org/@ledgerhq/errors/-/errors-6.24.0.tgz#323ed3b1a9bcd91a974dd1852f0b424349a6e39f"
   integrity sha512-UMy+nGH4hmlaML7vPiSwGQ/mOoq/rwExYGEZVpb9TPoG0AcSfzpG43LAdAemvCTX/gK0MUO+int4FpNkD1ZrtQ==
+
+"@ledgerhq/errors@^6.25.0":
+  version "6.25.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-6.25.0.tgz#1fa7ffa2038d0d1911c337804ea42b9430d80c34"
+  integrity sha512-9cU0dgUyq3Adb1bHAjJnbwl+r+4WBjuPq0k+/DbBNpuYHwcz2xKtRIjLimUJyACjHti3iWwRt1sFcbQDDdI08w==
 
 "@ledgerhq/evm-tools@^1.7.3":
   version "1.7.3"
@@ -913,22 +928,32 @@
     bignumber.js "^9.1.2"
     semver "^7.3.5"
 
-"@ledgerhq/hw-transport-mocker@^6.29.9":
-  version "6.29.9"
-  resolved "https://registry.npmjs.org/@ledgerhq/hw-transport-mocker/-/hw-transport-mocker-6.29.9.tgz#62fef7af113c5f0980a9cff37bab9e0f8a84bc19"
-  integrity sha512-2AsI2cc1JpEfJritBljKoOG7NGZAi3eXupvT0y+5i7t1EDzKODEFRqJAo1/Ffanvwo24oe8rqcVkpUoCAutuPQ==
+"@ledgerhq/hw-transport-mocker@^6.29.11", "@ledgerhq/hw-transport-mocker@^6.29.9":
+  version "6.29.11"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-mocker/-/hw-transport-mocker-6.29.11.tgz#67465061f16911e032a2416f0806852ffa7fa331"
+  integrity sha512-pkn3OL18qeGQRAqep8TJMIjKk3LRiVMYN2XOCF83DYJGutRuitfyEf5t1GbwSylxPopGiDQOBqw4pbwwm2Lo/w==
   dependencies:
-    "@ledgerhq/hw-transport" "^6.31.9"
+    "@ledgerhq/hw-transport" "^6.31.11"
     "@ledgerhq/logs" "^6.13.0"
     rxjs "^7.8.1"
 
-"@ledgerhq/hw-transport@6.31.9", "@ledgerhq/hw-transport@^6.31.9":
+"@ledgerhq/hw-transport@6.31.9":
   version "6.31.9"
   resolved "https://registry.npmjs.org/@ledgerhq/hw-transport/-/hw-transport-6.31.9.tgz#6c4a2f2c54beed52644dd9c8e9479900a5eace3a"
   integrity sha512-HqB2Whl2qbrzyvs9gC/GmLhIy8RO4CWzjqHS4k0bPWDZRqKa8m6H32vjrbXGO//pUL1Mlu87UwvxvLyuICdjwg==
   dependencies:
     "@ledgerhq/devices" "8.5.0"
     "@ledgerhq/errors" "^6.24.0"
+    "@ledgerhq/logs" "^6.13.0"
+    events "^3.3.0"
+
+"@ledgerhq/hw-transport@^6.31.11", "@ledgerhq/hw-transport@^6.31.9":
+  version "6.31.11"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-6.31.11.tgz#a3e947d7995be9fbb8c4d88c704adb2cf1b3d5b5"
+  integrity sha512-vAbZkYSa3ClHyvZxcnfzv8Mf1uaO+huB9a2lTiXP0V8QGYaGLU9CfGMtECvqqRRPEUomhelAzYTI+2UEWrokwg==
+  dependencies:
+    "@ledgerhq/devices" "8.6.0"
+    "@ledgerhq/errors" "^6.25.0"
     "@ledgerhq/logs" "^6.13.0"
     events "^3.3.0"
 
