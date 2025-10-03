@@ -50,7 +50,7 @@
     "@types/varint": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
-    "eslint": "^9.34.0",
+    "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-tsdoc": "^0.4.0",
