@@ -13,17 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************* */
-import Eth from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
 import BaseApp, { BIP32Path, INSGeneric, processErrorResponse, processResponse } from '@zondax/ledger-js'
 
 import * as varint from 'varint'
 
 import { P1_VALUES, PUBKEYLEN } from './consts'
+import * as EthAPDU from './eth-apdu'
 import { ResponseAddress, ResponseSign } from './types'
 
 export class FilecoinApp extends BaseApp {
-  private eth: Eth
 
   static _INS = {
     GET_VERSION: 0x00 as number,
@@ -46,7 +45,6 @@ export class FilecoinApp extends BaseApp {
     if (!this.transport) {
       throw new Error('Transport has not been defined')
     }
-    this.eth = new Eth(transport)
   }
 
   private parseAddressResponse(response: any): ResponseAddress {
@@ -136,14 +134,14 @@ export class FilecoinApp extends BaseApp {
   }
 
   async signETHTransaction(path: BIP32Path, rawTxHex: string, resolution = null) {
-    return await this.eth.signTransaction(path, rawTxHex, resolution)
+    return await EthAPDU.signETHTransaction(this.transport, path, rawTxHex, resolution)
   }
 
   async getETHAddress(path: BIP32Path, boolDisplay = false, boolChaincode = false) {
-    return await this.eth.getAddress(path, boolDisplay, boolChaincode)
+    return await EthAPDU.getETHAddress(this.transport, path, boolDisplay, boolChaincode)
   }
 
   async signPersonalMessageEVM(path: BIP32Path, messageHex: string) {
-    return await this.eth.signPersonalMessage(path, messageHex)
+    return await EthAPDU.signPersonalMessageEVM(this.transport, path, messageHex)
   }
 }
