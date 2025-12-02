@@ -4,35 +4,20 @@ import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
 import dts from 'rollup-plugin-dts';
 
-// Bundle everything - no external dependencies
-// This makes the package self-contained and easier for consumers
+// Externalize CommonJS-compatible deps - only bundle ESM-only deps (currently none)
+const external = [/@zondax\/ledger-js/, /varint/];
 
 export default [
   // CJS Build
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/cjs/index.js',
+      file: 'dist/index.js',
       format: 'cjs',
-      sourcemap: true,
       exports: 'named',
       interop: 'auto',
     },
-    plugins: [
-      resolve({ preferBuiltins: true, exportConditions: ['node', 'default'] }),
-      commonjs({ transformMixedEsModules: true }),
-      json(),
-      typescript({ tsconfig: './tsconfig.build.json', declaration: false }),
-    ],
-  },
-  // ESM Build
-  {
-    input: 'src/index.ts',
-    output: {
-      file: 'dist/esm/index.mjs',
-      format: 'es',
-      sourcemap: true,
-    },
+    external,
     plugins: [
       resolve({ preferBuiltins: true, exportConditions: ['node', 'default'] }),
       commonjs({ transformMixedEsModules: true }),
