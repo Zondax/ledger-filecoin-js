@@ -14,7 +14,6 @@
  *  limitations under the License.
  ******************************************************************************* */
 import type Transport from '@ledgerhq/hw-transport'
-
 import { BIP32Path } from '@zondax/ledger-js'
 
 /**
@@ -45,8 +44,8 @@ export interface EthSignature {
  * Encodes a BIP32 path into a buffer
  */
 function encodePath(path: BIP32Path): Buffer {
-  const pathArray = typeof path === 'string' ? path.split('/').filter((p) => p !== 'm') : path
-  const pathNumbers = pathArray.map((p) => {
+  const pathArray = typeof path === 'string' ? path.split('/').filter(p => p !== 'm') : path
+  const pathNumbers = pathArray.map(p => {
     const stripped = p.replace(/'/g, '')
     const num = parseInt(stripped, 10)
     return p.includes("'") ? num + 0x80000000 : num
@@ -92,12 +91,7 @@ export async function getETHAddress(transport: Transport, path: BIP32Path, displ
 /**
  * Sign an Ethereum transaction
  */
-export async function signETHTransaction(
-  transport: Transport,
-  path: BIP32Path,
-  rawTxHex: string,
-  resolution?: any
-): Promise<EthSignature> {
+export async function signETHTransaction(transport: Transport, path: BIP32Path, rawTxHex: string, resolution?: any): Promise<EthSignature> {
   const pathBuffer = encodePath(path)
 
   // Remove 0x prefix if present

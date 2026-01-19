@@ -1,11 +1,12 @@
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
-import json from '@rollup/plugin-json';
-import dts from 'rollup-plugin-dts';
+import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
+import resolve from '@rollup/plugin-node-resolve'
+import typescript from '@rollup/plugin-typescript'
+
+import dts from 'rollup-plugin-dts'
 
 // Externalize CommonJS-compatible deps - only bundle ESM-only deps (currently none)
-const external = [/@zondax\/ledger-js/, /varint/];
+const external = [/@zondax\/ledger-js/, /varint/]
 
 export default [
   // CJS Build
@@ -32,4 +33,4 @@ export default [
     external: [/@ledgerhq/, /@zondax/],
     plugins: [dts({ tsconfig: './tsconfig.build.json' })],
   },
-];
+]

@@ -23,7 +23,6 @@ import * as EthAPDU from './eth-apdu'
 import { ResponseAddress, ResponseSign } from './types'
 
 export class FilecoinApp extends BaseApp {
-
   static _INS = {
     GET_VERSION: 0x00 as number,
     GET_ADDR_SECP256K1: 0x01 as number,
