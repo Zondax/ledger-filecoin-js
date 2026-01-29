@@ -1,54 +1,24 @@
-name: 'Publish packages'
+name: Publish NPM Package
 
 on:
   release:
-    types:
-      - published
-      - edited
-    tags:
-      - "v[0-9]+(\\.[0-9]+)*"
+    types: [created]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
-  configure:
-    runs-on: ubuntu-latest
-    outputs:
-      datetime: ${{ steps.get-datetime.outputs.datetime }}
-    steps:
-      - id: get-datetime
-        run: echo "datetime=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-
-  publish_npm_package:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@zondax'
-      - name: Prepare README for npm
-        run: |
-          # Create a new README with the modified content
-          {
-              head -n 2 README.md
-              echo "![zondax](docs/zondax_light.png)"
-              tail -n +4 README.md
-          } > README.md.tmp
-          mv README.md.tmp README.md
-      - name: Install yarn
-        run: npm install -g yarn
-      - run: yarn install
-      - run: yarn build
-      - name: Get latest release version number
-        id: get_version
-        uses: battila7/get-version-action@v2
-      - name: Update tag
-        run: |
-          echo Publishing as ${{ steps.get_version.outputs.version }}
-          npm --allow-same-version --no-git-tag-version version ${{ steps.get_version.outputs.version }}
-      - name: Publish package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_PUBLISH_AUTO }}
-        run: |
-          npm publish
+  publish-npm:
+    uses: zondax/_workflows/.github/workflows/_publish-npm.yaml@v5
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      timeout_minutes: 15
+      dry_run: false
+      github_app_auth: false

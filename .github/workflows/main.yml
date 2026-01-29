@@ -1,34 +1,29 @@
-name: 'Main'
+name: CI
+
 on:
-  - push
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
 
 jobs:
-  configure:
-    runs-on: ubuntu-latest
-    outputs:
-      uid_gid: ${{ steps.get-user.outputs.uid_gid }}
-      datetime: ${{ steps.get-datetime.outputs.datetime }}
-    steps:
-      - id: get-user
-        run: echo "uid_gid=$(id -u):$(id -g)" >> $GITHUB_OUTPUT
-      - id: get-datetime
-        run: echo "datetime=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-
-  build:
-    needs: [configure]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          submodules: true
-      - name: Install node
-        uses: actions/setup-node@v4
-      - name: Install dependencies
-        run: yarn install
-      - name: Run linter
-        run: yarn lint
-      - name: Run formatter
-        run: yarn format
-      - name: Build
-        run: yarn build
+  ts-checks:
+    uses: zondax/_workflows/.github/workflows/_checks-ts.yaml@v5
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    with:
+      enable_tests: true
+      enable_typecheck: false
+      enable_coverage: false
+      test_command: 'test'
+      lint_command: 'lint'
+      format_command: 'format:check'

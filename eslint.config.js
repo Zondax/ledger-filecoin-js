@@ -1,7 +1,7 @@
-const unusedImports = require('eslint-plugin-unused-imports');
-const typescriptEslint = require('@typescript-eslint/eslint-plugin');
-const tsParser = require('@typescript-eslint/parser');
-const tsdoc = require('eslint-plugin-tsdoc');
+const unusedImports = require('eslint-plugin-unused-imports')
+const typescriptEslint = require('@typescript-eslint/eslint-plugin')
+const tsParser = require('@typescript-eslint/parser')
+const tsdoc = require('eslint-plugin-tsdoc')
 
 module.exports = [
   {
@@ -27,7 +27,7 @@ module.exports = [
     plugins: {
       'unused-imports': unusedImports,
       '@typescript-eslint': typescriptEslint,
-      'tsdoc': tsdoc,
+      tsdoc: tsdoc,
     },
     rules: {
       curly: 'warn',
@@ -45,4 +45,4 @@ module.exports = [
       'no-magic-numbers': 'off',
     },
   },
-];
+]
