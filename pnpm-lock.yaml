@@ -21,7 +21,7 @@ importers:
         version: 6.35.4
       '@zondax/ledger-js':
         specifier: ^1.3.3
-        version: 1.3.3
+        version: 1.3.4
       varint:
         specifier: ^6.0.0
         version: 6.0.0
@@ -984,8 +984,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@zondax/ledger-js@1.3.3':
-    resolution: {integrity: sha512-naWfF5usVF53JDS8y7tTl4DpQep7SHm8JN1/SnS84MSI0Xh6UIUhZf7Js+p/zjiRHcjSt/WpeSwPhFouSI7J9w==}
+  '@zondax/ledger-js@1.3.4':
+    resolution: {integrity: sha512-GrMGU22do4Wl7+UkWpXe32HsOuIXF3fVCL4cr/uiEgwwbmBXqzto7yBII7YepnfdMzuNAcXbQ6gO0wh0HZGSBg==}
     engines: {node: '>=20'}
 
   acorn-jsx@5.3.2:
@@ -2280,8 +2280,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-is@19.2.6:
-    resolution: {integrity: sha512-XjBR15BhXuylgWGuslhDKqlSayuqvqBX91BP8pauG8kd1zY8kotkNWbXksTCNRarse4kuGbe2kIY05ARtwNIvw==}
+  react-is@19.2.8:
+    resolution: {integrity: sha512-s5un28nYxKJw5gvUHyW5PCC28CvBqLu9r3cWgzHT4Vo/5fqqkFcdRYsGcKf50WMPpjjFZS5d76fn3YCo2njKwQ==}
 
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
@@ -3669,7 +3669,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@zondax/ledger-js@1.3.3':
+  '@zondax/ledger-js@1.3.4':
     dependencies:
       '@ledgerhq/hw-transport': 6.35.4
 
@@ -5279,7 +5279,7 @@ snapshots:
       '@jest/schemas': 30.4.1
       ansi-styles: 5.2.0
       react-is-18: react-is@18.3.1
-      react-is-19: react-is@19.2.6
+      react-is-19: react-is@19.2.8
 
   punycode@2.3.1: {}
 
@@ -5287,7 +5287,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-is@19.2.6: {}
+  react-is@19.2.8: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:
