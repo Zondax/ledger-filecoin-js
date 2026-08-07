@@ -34,7 +34,7 @@
     "upgrade": "pnpm dlx npm-check-updates -i"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport": "6.35.4",
+    "@ledgerhq/hw-transport": "6.35.7",
     "@zondax/ledger-js": "^1.3.3",
     "varint": "^6.0.0"
   },
