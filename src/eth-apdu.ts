@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************* */
-import type Transport from '@ledgerhq/hw-transport'
+import type { LedgerTransport } from '@zondax/ledger-js'
 import { BIP32Path } from '@zondax/ledger-js'
 
 /**
@@ -62,7 +62,7 @@ function encodePath(path: BIP32Path): Buffer {
 /**
  * Get Ethereum address from the Ledger device
  */
-export async function getETHAddress(transport: Transport, path: BIP32Path, display = false, chaincode = false): Promise<EthAddress> {
+export async function getETHAddress(transport: LedgerTransport, path: BIP32Path, display = false, chaincode = false): Promise<EthAddress> {
   const pathBuffer = encodePath(path)
   const p1 = display ? 0x01 : 0x00
   const p2 = chaincode ? 0x01 : 0x00
@@ -91,7 +91,12 @@ export async function getETHAddress(transport: Transport, path: BIP32Path, displ
 /**
  * Sign an Ethereum transaction
  */
-export async function signETHTransaction(transport: Transport, path: BIP32Path, rawTxHex: string, resolution?: any): Promise<EthSignature> {
+export async function signETHTransaction(
+  transport: LedgerTransport,
+  path: BIP32Path,
+  rawTxHex: string,
+  resolution?: any
+): Promise<EthSignature> {
   const pathBuffer = encodePath(path)
 
   // Remove 0x prefix if present
@@ -139,7 +144,7 @@ export async function signETHTransaction(transport: Transport, path: BIP32Path, 
 /**
  * Sign a personal message (EIP-191)
  */
-export async function signPersonalMessageEVM(transport: Transport, path: BIP32Path, messageHex: string): Promise<EthSignature> {
+export async function signPersonalMessageEVM(transport: LedgerTransport, path: BIP32Path, messageHex: string): Promise<EthSignature> {
   const pathBuffer = encodePath(path)
 
   // Remove 0x prefix if present

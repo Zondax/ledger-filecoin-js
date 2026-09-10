@@ -13,8 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************* */
-import type Transport from '@ledgerhq/hw-transport'
-import BaseApp, { BIP32Path, INSGeneric, processErrorResponse, processResponse } from '@zondax/ledger-js'
+import BaseApp, { BIP32Path, INSGeneric, type LedgerTransport, processErrorResponse, processResponse } from '@zondax/ledger-js'
 
 import * as varint from 'varint'
 
@@ -39,7 +38,7 @@ export class FilecoinApp extends BaseApp {
     requiredPathLengths: [5],
   }
 
-  constructor(transport: Transport) {
+  constructor(transport: LedgerTransport) {
     super(transport, FilecoinApp._params)
     if (!this.transport) {
       throw new Error('Transport has not been defined')
