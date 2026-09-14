@@ -24,10 +24,16 @@ import { ResponseAddress, ResponseSign } from './types'
 /**
  * Generic in the transport so `app.transport` keeps the caller's own type.
  *
- * `BaseApp` declares `readonly transport: LedgerTransport`, so without this the widened
- * constructor would narrow the inherited field as a side effect and `app.transport.close()`
- * -- fine today -- would stop compiling. Re-declaring it as `T`, inferred from the argument,
- * keeps every member of whatever was passed in: hw-transport's and a DMK transport's alike.
+ * `BaseApp` declares `readonly transport: LedgerTransport` -- `send` and nothing else --
+ * so re-declaring the field as `T` is what lets `app.transport.close()` keep working:
+ * `T` is inferred from the constructor argument, and `new FilecoinApp(hwTransport)` carries
+ * every member of whatever was passed in, hw-transport's and a DMK transport's alike.
+ *
+ * BREAKING: the inference only fires when the type is written or inferred with an argument.
+ * A bare `FilecoinApp` annotation falls back to the `LedgerTransport` default, so
+ * `const app: FilecoinApp` narrows `app.transport` to `send` only and reaching for
+ * `close` / `exchange` / `on` through it no longer typechecks. Annotate the transport --
+ * `const app: FilecoinApp<Transport>` -- to keep those members.
  */
 export class FilecoinApp<T extends LedgerTransport = LedgerTransport> extends BaseApp {
   declare readonly transport: T
