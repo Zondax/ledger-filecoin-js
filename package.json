@@ -34,7 +34,7 @@
     "upgrade": "pnpm dlx npm-check-updates -i"
   },
   "dependencies": {
-    "@zondax/ledger-js": "^2.0.0",
+    "@zondax/ledger-js": "^2.1.0",
     "varint": "^6.0.0"
   },
   "devDependencies": {
