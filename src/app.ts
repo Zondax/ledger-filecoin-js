@@ -13,8 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************* */
-import type Transport from '@ledgerhq/hw-transport'
-import BaseApp, { BIP32Path, INSGeneric, processErrorResponse, processResponse } from '@zondax/ledger-js'
+import BaseApp, { BIP32Path, INSGeneric, type LedgerTransport, processErrorResponse, processResponse } from '@zondax/ledger-js'
 
 import * as varint from 'varint'
 
@@ -22,7 +21,23 @@ import { P1_VALUES, PUBKEYLEN } from './consts'
 import * as EthAPDU from './eth-apdu'
 import { ResponseAddress, ResponseSign } from './types'
 
-export class FilecoinApp extends BaseApp {
+/**
+ * Generic in the transport so `app.transport` keeps the caller's own type.
+ *
+ * `BaseApp` declares `readonly transport: LedgerTransport` -- `send` and nothing else --
+ * so re-declaring the field as `T` is what lets `app.transport.close()` keep working:
+ * `T` is inferred from the constructor argument, and `new FilecoinApp(hwTransport)` carries
+ * every member of whatever was passed in, hw-transport's and a DMK transport's alike.
+ *
+ * BREAKING: the inference only fires when the type is written or inferred with an argument.
+ * A bare `FilecoinApp` annotation falls back to the `LedgerTransport` default, so
+ * `const app: FilecoinApp` narrows `app.transport` to `send` only and reaching for
+ * `close` / `exchange` / `on` through it no longer typechecks. Annotate the transport --
+ * `const app: FilecoinApp<Transport>` -- to keep those members.
+ */
+export class FilecoinApp<T extends LedgerTransport = LedgerTransport> extends BaseApp {
+  declare readonly transport: T
+
   static _INS = {
     GET_VERSION: 0x00 as number,
     GET_ADDR_SECP256K1: 0x01 as number,
@@ -39,7 +54,7 @@ export class FilecoinApp extends BaseApp {
     requiredPathLengths: [5],
   }
 
-  constructor(transport: Transport) {
+  constructor(transport: T) {
     super(transport, FilecoinApp._params)
     if (!this.transport) {
       throw new Error('Transport has not been defined')
