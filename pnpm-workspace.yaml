@@ -11,3 +11,7 @@ overrides:
   'minimatch@>=9.0.0 <9.0.7': '^9.0.7'
   'picomatch@<2.3.2': '^2.3.2'
   'picomatch@>=4.0.0 <4.0.4': '^4.0.4'
+
+# First-party: pnpm 11+'s default 24h gate would fail CI until the tarball ages.
+minimumReleaseAgeExclude:
+  - '@zondax/ledger-js'
